@@ -81,7 +81,15 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
     lib32gcc-s1 \
     inetutils-ping \
     net-tools \
-    grub-efi-amd64-signed
+    ethtool \
+    grub-efi-amd64-signed \
+    xserver-xorg-input-libinput \
+    xserver-xorg-input-evdev \
+    xserver-xorg-input-mouse \
+    xserver-xorg-input-synaptics \
+    ubuntu-restricted-extras \
+    libelf-dev \
+    haveged
 
 # lupin-casper = deprecated since ubuntu 22.04
 # If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
@@ -101,7 +109,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    stress \
    dkms \
    b43-fwcutter \
-   ubuntu-restricted-extras \
    testdisk \
    libatasmart-bin \
    openssh-server \
@@ -118,12 +125,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    xinit \
    epiphany-browser \
    htop \
-   qemu-kvm \
-   libvirt-clients \
-   libvirt-daemon-system \
-   bridge-utils \
-   virt-manager \
-   ovmf \
    gpm \
    xterm \
    openbox \
@@ -138,8 +139,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    w3m-img \
    rdesktop \
    terminator \
-   xorg \
-   dnsmasq --no-install-recommends
+   xorg --no-install-recommends
 
 # Sem cuidado o inxi puxa pacotes do xorg e xinit desnecessariamente.
 #sudo chroot $HOME/$name/chroot apt install -y --no-install-recommends
@@ -230,26 +230,60 @@ if loadfont /boot/grub/unicode.pf2 ; then
 	terminal_output gfxterm
 fi
 
-menuentry "$name (Normal)" {
+menuentry "Normal" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
    initrd /casper/initrd
 }
-menuentry "$name (Recovery Mode)" {
+menuentry "NVIDIA Legacy" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset locale=pt_BR ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Copiar .ISO para Memória RAM" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Recovery Mode" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
    initrd /casper/initrd
 }
+menuentry "Recovery Mode - Safe Graphics" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Reiniciar" {reboot}
+menuentry "Desligar" {halt}
 EOF
 
 # Loopback
 cat <<EOF > image/boot/grub/loopback.cfg
-menuentry "$name (Normal)" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper iso-scan/filename=\${iso_path} locale=pt_BR ---
+menuentry "Normal" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
    initrd /casper/initrd
 }
-menuentry "$name (Recovery Mode)" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper iso-scan/filename=\${iso_path} locale=pt_BR recovery ---
+menuentry "NVIDIA Legacy" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset locale=pt_BR ---
    initrd /casper/initrd
 }
+menuentry " " {set gfxpayload=keep}
+menuentry "Copiar .ISO para Memória RAM" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Recovery Mode" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
+   initrd /casper/initrd
+}
+menuentry "Recovery Mode - Safe Graphics" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Reiniciar" {reboot}
+menuentry "Desligar" {halt}
 EOF
 
 # É aqui o quiet splash caso deseje ter um!
@@ -258,7 +292,7 @@ EOF
 cat <<EOF > image/preseed/$name.seed
 # Success command
 #d-i ubiquity/success_command string \
-sed -i 's/quiet splash/loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off/g' /target/etc/default/grub ; \
+sed -i 's/quiet splash/rd.udev.log_priority=3 loglevel=3 rd.systemd.show_status=auto logo.nologo vt.global_cursor_default=0 mitigations=off/g' /target/etc/default/grub ; \
 chroot /target update-grub
 EOF
 
