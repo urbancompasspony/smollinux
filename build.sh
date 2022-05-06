@@ -240,7 +240,7 @@ menuentry "NVIDIA Legacy" {
    initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
-menuentry "Copiar .ISO para Memória RAM" {
+menuentry "Copiar .ISO para Memoria RAM" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
    initrd /casper/initrd
 }
@@ -269,7 +269,7 @@ menuentry "NVIDIA Legacy" {
    initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
-menuentry "Copiar .ISO para Memória RAM" {
+menuentry "Copiar .ISO para Memoria RAM" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
    initrd /casper/initrd
 }
