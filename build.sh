@@ -139,7 +139,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    rdesktop \
    terminator \
    xorg \
-   cifs-utils \
    dnsmasq --no-install-recommends
 
 # Sem cuidado o inxi puxa pacotes do xorg e xinit desnecessariamente.
