@@ -13,7 +13,7 @@ Everything is running under TTY.
 Using Ubuntu 22.04 LTS as base system, install these packages:
 build-essential debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
 
-## Since Ubuntu 22.04 the packages lupin-casper and lib32gcc are deprecated. We will use casper and lib32gcc-s1 instead.
+### Since Ubuntu 22.04 the packages lupin-casper and lib32gcc are deprecated. We will use casper and lib32gcc-s1 instead.
 
 # Running
 
