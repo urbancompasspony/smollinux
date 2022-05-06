@@ -103,6 +103,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    cifs-utils \
    iotop \
+   testdisk \
    netdiscover \
    samba \
    speedtest-cli \
