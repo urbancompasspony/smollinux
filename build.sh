@@ -45,7 +45,7 @@ EOF
 sudo chroot $HOME/$name/chroot apt update
 sudo chroot $HOME/$name/chroot apt install -y software-properties-common
 # PPA 1
-#sudo chroot $HOME/$name/chroot add-apt-repository -yn ppa:usuário/programa
+#sudo chroot $HOME/$name/chroot add-apt-repository -y ppa:usuário/programa
 # PPA 2
 #sudo chroot $HOME/$name/chroot add-apt-repository -y ppa:usuário/programa
 
@@ -115,8 +115,23 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    w3m \
    w3m-img \
    rdesktop \
-   libgtk2.0-bin
+   libgtk2.0-bin \
+   xterm \
+   inxi \
+   rsync \
+   x11-xserver-utils \
+   openbox \
+   obconf \
+   xserver-xorg-video-all \
+   xserver-xorg-input-all \
+   apt-utils \
+   btrfs-progs
 
+#   xserver-xorg-input-libinput \
+#   xserver-xorg-input-evdev \
+#   xserver-xorg-input-mouse \
+#   xserver-xorg-input-synaptics
+   
 # lupin-casper = deprecated since ubuntu 22.04
 # If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
 
@@ -127,19 +142,16 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
 
 # Programas --no-install-recommends
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   inxi \
-   xterm \
-   xinit \
+   caja \
    xorg \
-   x11-xserver-utils \
-   xserver-xorg-input-libinput \
-   xserver-xorg-input-evdev \
-   xserver-xorg-input-mouse \
-   xserver-xorg-input-synaptics \
-   openbox \
-   obconf \
-   terminator \
-   caja --no-install-recommends
+   xinit \
+   terminator --no-install-recommends
+
+# WINE
+sudo chroot $HOME/$name/chroot dpkg --add-architecture i386
+sudo chroot $HOME/$name/chroot apt update
+sudo chroot $HOME/$name/chroot apt install -y \
+   wine
 
 #   gvfs-backends
 
@@ -159,7 +171,9 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
 
 # Remoção de pacotes desnecessários
 sudo chroot $HOME/ubuntu-custom/chroot apt autoremove --purge -y \
-   gnome-terminal
+   gnome-terminal \
+   unattended-upgrades \
+   snapd
 #    programa2 \
 #    programa3
 
