@@ -64,52 +64,38 @@ sudo chroot $HOME/$name/chroot sh -c "echo 'locales locales/default_environment_
 sudo chroot $HOME/$name/chroot sh -c "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections"
 sudo chroot $HOME/$name/chroot sh -c "echo 'resolvconf resolvconf/linkify-resolvconf boolean false' | debconf-set-selections"
 
-# Ferramentas base do Ubuntu
+# Programas comuns
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-    casper \
-    discover \
-    laptop-detect \
-    linux-generic \
-    locales \
-    casper \
-    net-tools \
-    network-manager \
-    os-prober \
-    resolvconf \
-    ubuntu-standard \
-    wireless-tools \
-    lib32gcc-s1 \
-    inetutils-ping \
-    net-tools \
-    ethtool \
-    grub-efi-amd64-signed \
-    xserver-xorg-input-libinput \
-    xserver-xorg-input-evdev \
-    xserver-xorg-input-mouse \
-    xserver-xorg-input-synaptics \
-    ubuntu-restricted-extras \
-    libelf-dev \
-    haveged
-
-# lupin-casper = deprecated since ubuntu 22.04
-# If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
-
-# Ambiente de desktop
-# Adicione aqui o ambiente desktop desejado! No exemplo, Ubuntu MATE.
-#sudo chroot $HOME/$name/chroot apt-mark hold gnome-shell
-#sudo chroot $HOME/$name/chroot apt install -y ubuntu-mate-desktop
-
-# Programas inclusos no sistema
-sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   cifs-utils \
+   casper \
+   discover \
+   laptop-detect \
+   linux-generic \
+   locales \
+   net-tools \
+   network-manager \
+   os-prober \
+   resolvconf \
+   ubuntu-standard \
+   ubuntu-restricted-extras \
+   wireless-tools \
+   lib32gcc-s1 \
+   inetutils-ping \
+   net-tools \
+   ethtool \
+   grub-efi-amd64-signed \
+   libelf-dev \
+   haveged \
    iotop \
    testdisk \
    netdiscover \
    samba \
+   samba-common \
+   cifs-utils \
    speedtest-cli \
    stress \
    dkms \
    b43-fwcutter \
+   bcmwl-kernel-source \
    testdisk \
    libatasmart-bin \
    openssh-server \
@@ -121,26 +107,41 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    traceroute \
    mutt \
    udpcast \
-   inxi \
-   xterm \
-   xinit \
-   epiphany-browser \
    htop \
-   gpm \
-   xterm \
-   openbox \
    sshpass \
    macchanger \
-   obconf \
-   caja \
-   gvfs-backends \
    alsa-base \
    pulseaudio \
    w3m \
    w3m-img \
    rdesktop \
+   libgtk2.0-bin
+
+# lupin-casper = deprecated since ubuntu 22.04
+# If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
+
+# Ambiente de desktop
+# Adicione aqui o ambiente desktop desejado! No exemplo, Ubuntu MATE.
+#sudo chroot $HOME/$name/chroot apt-mark hold gnome-shell
+#sudo chroot $HOME/$name/chroot apt install -y ubuntu-mate-desktop
+
+# Programas --no-install-recommends
+sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
+   inxi \
+   xterm \
+   xinit \
+   xorg \
+   x11-xserver-utils \
+   xserver-xorg-input-libinput \
+   xserver-xorg-input-evdev \
+   xserver-xorg-input-mouse \
+   xserver-xorg-input-synaptics \
+   openbox \
+   obconf \
    terminator \
-   xorg --no-install-recommends
+   caja --no-install-recommends
+
+#   gvfs-backends
 
 # Sem cuidado o inxi puxa pacotes do xorg e xinit desnecessariamente.
 #sudo chroot $HOME/$name/chroot apt install -y --no-install-recommends
@@ -254,8 +255,8 @@ menuentry "Recovery Mode - Safe Graphics" {
    initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
-menuentry "Reiniciar" {reboot}
-menuentry "Desligar" {halt}
+menuentry "Reboot" {reboot}
+menuentry "Shutdown" {halt}
 EOF
 
 # Loopback
@@ -283,8 +284,8 @@ menuentry "Recovery Mode - Safe Graphics" {
    initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
-menuentry "Reiniciar" {reboot}
-menuentry "Desligar" {halt}
+menuentry "Reboot" {reboot}
+menuentry "Shutdown" {halt}
 EOF
 
 # É aqui o quiet splash caso deseje ter um!
