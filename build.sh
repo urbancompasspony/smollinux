@@ -308,7 +308,7 @@ EOF
 cat <<EOF > image/preseed/$name.seed
 # Success command
 #d-i ubiquity/success_command string \
-sed -i 's/quiet splash/rd.udev.log_priority=3 loglevel=3 rd.systemd.show_status=auto logo.nologo vt.global_cursor_default=0 mitigations=off/g' /target/etc/default/grub ; \
+sed -i 's/quiet splash/loglevel=0 logo.nologo vt.global_cursor_default=0 mitigations=off/g' /target/etc/default/grub ; \
 chroot /target update-grub
 EOF
 
