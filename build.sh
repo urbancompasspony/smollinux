@@ -125,7 +125,13 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    xserver-xorg-video-all \
    xserver-xorg-input-all \
    apt-utils \
-   btrfs-progs
+   btrfs-progs \
+   brightnessctl \
+   cups \
+   printer-driver-all \
+   motion \
+   openvpn \
+   apache2
 
 #   xserver-xorg-input-libinput \
 #   xserver-xorg-input-evdev \
@@ -250,22 +256,22 @@ menuentry "Normal" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
    initrd /casper/initrd
 }
-menuentry "NVIDIA Legacy" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset locale=pt_BR ---
-   initrd /casper/initrd
-}
-menuentry " " {set gfxpayload=keep}
-menuentry "Copy to RAM" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
-   initrd /casper/initrd
-}
-menuentry " " {set gfxpayload=keep}
 menuentry "Recovery Mode" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
    initrd /casper/initrd
 }
 menuentry "Recovery Mode - Safe Graphics" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "Copy to RAM" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
+   initrd /casper/initrd
+}
+menuentry " " {set gfxpayload=keep}
+menuentry "NVIDIA Legacy" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
    initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
@@ -279,16 +285,6 @@ menuentry "Normal" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
    initrd /casper/initrd
 }
-menuentry "NVIDIA Legacy" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset locale=pt_BR ---
-   initrd /casper/initrd
-}
-menuentry " " {set gfxpayload=keep}
-menuentry "Copy to RAM" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper toram locale=pt_BR ---
-   initrd /casper/initrd
-}
-menuentry " " {set gfxpayload=keep}
 menuentry "Recovery Mode" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
    initrd /casper/initrd
@@ -297,7 +293,23 @@ menuentry "Recovery Mode - Safe Graphics" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
    initrd /casper/initrd
 }
+
 menuentry " " {set gfxpayload=keep}
+
+menuentry "Copy to RAM" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
+   initrd /casper/initrd
+}
+
+menuentry " " {set gfxpayload=keep}
+
+menuentry "NVIDIA Legacy" {
+   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
+   initrd /casper/initrd
+}
+
+menuentry " " {set gfxpayload=keep}
+
 menuentry "Reboot" {reboot}
 menuentry "Shutdown" {halt}
 EOF
@@ -402,4 +414,4 @@ sudo xorriso \
       /EFI/efiboot.img=isolinux/efiboot.img
 
 # Geração do MD5 externo da imagem de instalação.
-md5sum ../iso/$name-amd64.iso > ../iso/$name-amd64.md5
+md5sum ../iso/$name-22.04-amd64.iso > ../iso/$name-22.04-amd64.md5
