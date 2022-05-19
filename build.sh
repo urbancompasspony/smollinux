@@ -151,6 +151,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    caja \
    xorg \
    xinit \
+   pluma \
    terminator --no-install-recommends
 
 # WINE
