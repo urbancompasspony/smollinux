@@ -82,6 +82,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    inetutils-ping \
    net-tools \
    ethtool \
+   eom \
    grub-efi-amd64-signed \
    libelf-dev \
    haveged \
