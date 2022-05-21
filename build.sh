@@ -153,6 +153,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    xorg \
    xinit \
    pluma \
+   gnome-disk-utility \
    terminator --no-install-recommends
 
 # WINE
