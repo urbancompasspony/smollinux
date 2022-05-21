@@ -41,69 +41,69 @@ Be creative here!
 
 There are some folders with some codes. They are:
 
-.
-├── build.sh
-└── settings (1)
+-.
+-├── build.sh
+-└── settings (1)
 -    ├── etc
 -    │   ├── apache2 (2)
-    │   │   ├── apache2.conf
-    │   │   ├── conf-available
-    │   │   │   └── other-vhosts-access-log.conf
-    │   │   └── sites-available
-    │   │       ├── 000-default.conf
-    │   │       └── default-ssl.conf
-    │   ├── cups (3)
-    │   │   └── cupsd.conf
-    │   ├── motion (4)
-    │   │   └── motion.conf
-    │   ├── samba (5)
-    │   │   └── smb.conf
-    │   ├── skel
-    │   │   ├── .bashrc (6)
-    │   │   ├── .custom (7)
-    │   │   ├── .live (8)
-    │   │   ├── VIRUS (9)
-    │   │   ├── VIRUS-ALTERADO (10)
-    │   │   └── VPN (11)
-    │   └── systemd
-    │       └── system
-    │           ├── getty@tty1.service.d (12)
-    │           │   └── override.conf
-    │           └── getty@tty5.service.d (13)
-    │               └── override.conf
-    ├── mnt (14)
-    │   ├── backup
-    │   ├── disk01
-    │   ├── disk02
-    │   ├── disk03
-    │   ├── server
-    └── root
-        ├── .bashrc (15)
-        ├── .custom (16)
-        ├── .live (17)
-        └── VPN (18)
+-    │   │   ├── apache2.conf
+-    │   │   ├── conf-available
+-    │   │   │   └── other-vhosts-access-log.conf
+-    │   │   └── sites-available
+-    │   │       ├── 000-default.conf
+-    │   │       └── default-ssl.conf
+-    │   ├── cups (3)
+-    │   │   └── cupsd.conf
+-    │   ├── motion (4)
+-    │   │   └── motion.conf
+-    │   ├── samba (5)
+-    │   │   └── smb.conf
+-    │   ├── skel
+-    │   │   ├── .bashrc (6)
+-    │   │   ├── .custom (7)
+-    │   │   ├── .live (8)
+-    │   │   ├── VIRUS (9)
+-    │   │   ├── VIRUS-ALTERADO (10)
+-    │   │   └── VPN (11)
+-    │   └── systemd
+-    │       └── system
+-    │           ├── getty@tty1.service.d (12)
+-    │           │   └── override.conf
+-    │           └── getty@tty5.service.d (13)
+-    │               └── override.conf
+-    ├── mnt (14)
+-    │   ├── backup
+-    │   ├── disk01
+-    │   ├── disk02
+-    │   ├── disk03
+-    │   ├── server
+-    └── root
+-        ├── .bashrc (15)
+-        ├── .custom (16)
+-        ├── .live (17)
+-        └── VPN (18)
 
-(1) The folder Settings to start.
-(2) Apache2 will run a default test page when boot.
-(3) Cups will run a default config. page that allow access to http://localhost:631
-(4) Motion will start a Live Streaming Cam on http://localhost:8081 if running on notebook.
-Use "X Motion" on Menu to turn Off.
-(5) SAMBA default configuration for sharing a folder after using config. Samba on Menu
-(6) Modified Bashrc to run MENU script at startup. Edit this to remove the MENU boot.
-(7) Just a lock file.
-(8) The main MENU script that substitute the GUI adapted por user Ubuntu
-(9) A demo file that will thrigger any antivirus tool.
-(10) A demo file that will thrigger any antivirus tool.
-(11) Put .ovpn files here if there is any, to run as ubuntu user.
-(12) Will AUTO LOGIN for the "ubuntu" default user.
-Create more folders for more TTY. Default is just TTY1.
-(13) Will AUTO LOGIN for the "root" default user.
-Create more folders for more TTY. Default is just TTY5.
-(14) Some default /mnt folders.
-(15) Modified Bashrc to run MENU script at startup on ROOT user. Edit this to remove the MENU boot.
-(16) Just a lock file.
-(17) The main MENU script that substitute the GUI adapted por user root
-(18) Put .ovpn files here if there is any, to run as root user.
+-(1) The folder Settings to start.
+-(2) Apache2 will run a default test page when boot.
+-(3) Cups will run a default config. page that allow access to http://localhost:631
+-(4) Motion will start a Live Streaming Cam on http://localhost:8081 if running on notebook.
+-Use "X Motion" on Menu to turn Off.
+-(5) SAMBA default configuration for sharing a folder after using config. Samba on Menu
+-(6) Modified Bashrc to run MENU script at startup. Edit this to remove the MENU boot.
+-(7) Just a lock file.
+-(8) The main MENU script that substitute the GUI adapted por user Ubuntu
+-(9) A demo file that will thrigger any antivirus tool.
+-(10) A demo file that will thrigger any antivirus tool.
+-(11) Put .ovpn files here if there is any, to run as ubuntu user.
+-(12) Will AUTO LOGIN for the "ubuntu" default user.
+-Create more folders for more TTY. Default is just TTY1.
+-(13) Will AUTO LOGIN for the "root" default user.
+-Create more folders for more TTY. Default is just TTY5.
+-(14) Some default /mnt folders.
+-(15) Modified Bashrc to run MENU script at startup on ROOT user. Edit this to remove the MENU boot.
+-(16) Just a lock file.
+-(17) The main MENU script that substitute the GUI adapted por user root
+-(18) Put .ovpn files here if there is any, to run as root user.
 
 Use "menu" command to open MENU if it is closed.
 Use "menug" command to update MENU.
