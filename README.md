@@ -77,9 +77,9 @@ There are some folders with some codes. They are:
 -    │   ├── disk03
 -    │   ├── server
 -    └── root
--        ├── .bashrc (15)
--        ├── .custom (16)
--        ├── .live (17)
+-        ├── bashrc (15)
+-        ├── custom (16)
+-        ├── live (17)
 -        └── VPN (18)
 
 -(1) The folder Settings to start.
@@ -89,22 +89,39 @@ There are some folders with some codes. They are:
 -(3) Cups will run a default config. page that allow access to http://localhost:631
 
 -(4) Motion will start a Live Streaming Cam on http://localhost:8081 if running on notebook.
--Use "X Motion" on Menu to turn Off.
+
+Use "X Motion" on Menu to turn Off.
+
 -(5) SAMBA default configuration for sharing a folder after using config. Samba on Menu
+
 -(6) Modified Bashrc to run MENU script at startup. Edit this to remove the MENU boot.
+
 -(7) Just a lock file.
+
 -(8) The main MENU script that substitute the GUI adapted por user Ubuntu
+
 -(9) A demo file that will thrigger any antivirus tool.
+
 -(10) A demo file that will thrigger any antivirus tool.
+
 -(11) Put .ovpn files here if there is any, to run as ubuntu user.
+
 -(12) Will AUTO LOGIN for the "ubuntu" default user.
+
 -Create more folders for more TTY. Default is just TTY1.
+
 -(13) Will AUTO LOGIN for the "root" default user.
+
 -Create more folders for more TTY. Default is just TTY5.
+
 -(14) Some default /mnt folders.
+
 -(15) Modified Bashrc to run MENU script at startup on ROOT user. Edit this to remove the MENU boot.
+
 -(16) Just a lock file.
+
 -(17) The main MENU script that substitute the GUI adapted por user root
+
 -(18) Put .ovpn files here if there is any, to run as root user.
 
 Use "menu" command to open MENU if it is closed.
