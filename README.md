@@ -111,7 +111,7 @@ Use "X Motion" on Menu to turn Off.
 
 -(14) Some default /mnt folders.
 
--(15) Same as under (5.1)
+-(15) Same as under (5.1) but for root user!
 
 Use "menu" command to open MENU if it is closed.
 Use "menug" command to update MENU.
