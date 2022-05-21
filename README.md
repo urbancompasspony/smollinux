@@ -77,10 +77,10 @@ There are some folders with some codes. They are:
 -    │   ├── disk03
 -    │   ├── server
 -    └── root
--├── bashrc (15)
--├── custom (16)
--├── live (17)
--└── VPN (18)
+-        ├── bashrc (15)
+-        ├── custom (16)
+-        ├── live (17)
+-        └── VPN (18)
 
 -(1) The folder Settings to start.
 
