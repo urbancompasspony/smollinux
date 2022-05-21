@@ -69,13 +69,7 @@ There are some folders with some codes. They are:
 -    │           │   └── override.conf
 -    │           └── getty@tty5.service.d (13)
 -    │               └── override.conf
--    ├── mnt (14)
--    │   ├── backup
--    │   ├── disk01
--    │   ├── disk02
--    │   ├── disk03
--    │   ├── server
--    └── root (15)
+-    └── root (14)
 
 -(1) The folder Settings to start.
 
@@ -109,9 +103,7 @@ Use "X Motion" on Menu to turn Off.
 
 -Create more folders for more TTY. Default is just TTY5.
 
--(14) Some default /mnt folders.
-
--(15) Same as under (5.1) but for root user!
+-(14) Same as under (5.1) but for root user!
 
 Use "menu" command to open MENU if it is closed.
 Use "menug" command to update MENU.
