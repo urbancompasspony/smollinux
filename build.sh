@@ -132,6 +132,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    printer-driver-all \
    motion \
    openvpn \
+   fsarchiver \
    apache2
 
 #   xserver-xorg-input-libinput \
