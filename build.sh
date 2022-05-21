@@ -85,6 +85,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    eom \
    grub-efi-amd64-signed \
    libelf-dev \
+   tcpdump \
    haveged \
    iotop \
    testdisk \
@@ -94,6 +95,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    cifs-utils \
    speedtest-cli \
    stress \
+   fsarchiver \
    dkms \
    b43-fwcutter \
    bcmwl-kernel-source \
@@ -132,7 +134,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    printer-driver-all \
    motion \
    openvpn \
-   fsarchiver \
    apache2
 
 #   xserver-xorg-input-libinput \
