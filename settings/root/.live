@@ -1,0 +1,1015 @@
+#!/bin/bash
+
+# PAINEL DE CONTROLE ###########################################################
+
+# Versionamento: v1.9.4
+# 1.x: Mudanças drásticas, geralmente recursos novos e menus principais.
+# x.9: Mudanças pequenas, implementação de novas ferramentas.
+# rc-1: Correções de bugs de ferramentas ou menus
+
+# Hashs
+hash2="576200e78f0ab25b437dc7372ae920d9"
+hash3="9ae7c2a8e120dssssa4915cba5a15e17"
+
+version="v1.0"
+revis="r0.5"
+
+password0="root"
+
+################################################################################
+################################################################################
+
+# Docs
+FILE="/$USER/.lockinit"
+FILE3="/tmp/.email"
+FILE4="/tmp/.relat"
+
+doc_rel="0"
+datetime3=$(date +"%m-%Y") # Month
+
+[ -f /$USER/.custom ] || { touch /$USER/.custom; chmod +x /$USER/.custom; } 
+
+[ -f /$USER/.DOC/$datetime3 ] || {
+cp "/$USER/.DOC/.relat.docx" "/$USER/.DOC/$datetime3.docx" 2> /dev/null
+
+TEXTAO14="
+Conforme estipulado em contrato mensal de prestação de serviços na área de informática, segue abaixo o relatório de suporte, manutenções preventivas e corretivas executados no período de $datetime3:"
+
+echo "$TEXTAO14" >> "/$USER/.DOC/$datetime3.docx"
+}
+
+# Menu Title
+bktitle="USM: Universal Server Menu $version"
+report=0; datetime2=0; confrel=0
+
+# SISTEMA Normal
+function start {
+doc_rel="1" # Relatorio!
+ip=$(hostname -I | awk '{print $1}')
+datetime=$(date +"%d/%m %H:%M")
+uptime=$(uptime | awk {'print $3 $4 $5'})
+var1=$(dialog --backtitle "$bktitle" --title 'Menu Principal' --menu "IP Local: $ip
+Data e Hora: $datetime
+UpTime: $uptime"  0 0 0 \
+A 'Status Geral' \
+B 'Palemoon' \
+C 'OpenBox' \
+D 'Ghost (GUI)' \
+E 'Ghost Explorer (GUI)' \
+F 'Executar...' \
+G '...Executar' \
+H 'Processos' \
+I 'Ferramentas' \
+J 'Configurações' \
+K '*Reiniciar' \
+L '*Desligar' \
+X 'SAIR' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var1" in
+A) menu01 ;;
+B) xinit /$USER/.palemoon/palefull $* -- :1 vt$XDG_VTNR; start ;;
+C) startx ; start ;;
+D) echo "$password0" | sudo -S /$USER/.Ghost/Ghost; start ;;
+E) wine /$USER/.Ghost/Outros/GhostExplorer.Exe; start ;;
+F) custom1=$(cat /$USER/.custom); xinit "$custom1" $* -- :4 vt$XDG_VTNR; start ;;
+G) custom2=$(dialog --title 'Call Xinit' --backtitle "$bktitle" --inputbox "Digite um binário que use interface de usuário:" 10 30 2>&1 > /dev/tty); xinit "$custom2" $* -- :4 vt$XDG_VTNR; start ;;
+H) menu03 ;;
+I) menu05 ;;
+J) m10 ;;
+K) menu06 ;;
+L) menu07 ;;
+X) echo "Saindo... Para voltar, digite 'menu'!" && exit ;;
+esac
+}
+
+# Invertido
+function st4rt1 {
+ip=$(hostname -I | awk '{print $1}')
+datetime=$(date +"%d/%m %H:%M")
+uptime=$(uptime | awk {'print $3 $4 $5'})
+var1=$(dialog --backtitle "$bktitle" --title 'Menu Principal' --menu "IP Local: $ip
+Data e Hora: $datetime
+UpTime: $uptime"  0 0 0 \
+A 'Status Geral' \
+B 'Iniciar OpenBox' \
+C 'Processos' \
+D 'Ferramentas' \
+E '*Reiniciar' \
+F '*Desligar' \
+X 'SAIR' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var1" in
+A) m3nu01 ;;
+B) startx ;;
+C) menu03 ;;
+D) m3nu05 ;;
+E) menu06 ;;
+F) menu07 ;;
+X) echo "Saindo... Para voltar, digite 'menu'!" && exit ;;
+esac
+}
+
+# Ferramentas Normal
+function menu05 {
+var6=$(dialog --title 'Ferramentas' --backtitle "$bktitle" --menu " " 0 0 0 \
+A 'rDesktop' \
+B 'X rDesktop' \
+C 'Hard. Rede' \
+D 'Stress CPU' \
+E 'Hiberfil.sys' \
+F 'UDPCast' \
+G 'TestDisk' \
+H '*SpeedTest' \
+I '*Arp-Scan' \
+J '*IP Neigh' \
+K '*WhoIs' \
+L '*TraceRoute' \
+M '*Ping DNS' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var6" in
+A) menu04 ;;
+B) killall rdesktop ; menu05 ;;
+C) menu21 ;;
+D) stress -c 16; m10 ;;
+E) menu31 ;;
+F) menu17 ;;
+G) echo "$password0" | sudo -S testdisk ; menu05 ;;
+H) menu050 ;;
+I) menu0501 ;;
+J) menu23 ;;
+K) menu051 ;;
+L) menu052 ;;
+M) menu22 ;;
+X) liminal "st4rt1" "start" ;;
+esac
+}
+
+# Ferramentas Invertido
+function m3nu05 {
+var6=$(dialog --title 'Ferramentas' --backtitle "$bktitle" --menu " " 0 0 0 \
+A 'Placas de Rede' \
+B '*Speed Test' \
+C '*Arp-Scan' \
+D '*Trace Route' \
+E 'Definir Relatórios' \
+F 'Relatórios Salvos' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var6" in
+A) menu21 ;;
+B) menu050 ;;
+C) menu0501 ;;
+D) menu052 ;;
+E) menu054 ;;
+F) menu055 ;;
+X) liminal "st4rt1" "start" ;;
+esac
+}
+
+function m10 {
+var10=$(dialog --backtitle "$bktitle" --title 'Configurações' --menu "" 0 0 0 \
+A 'Samba Client' \
+B 'Samba Server' \
+C 'X Samba' \
+D 'Motion' \
+E 'X Motion' \
+F 'LAN/WiFi' \
+G 'Audio' \
+H 'Brilho de Tela' \
+I 'Ligar/Desl. Relatórios' \
+J 'Rel. Manual' \
+K 'Relatórios Salvos' \
+L 'Encaminhar .docx' \
+M 'Apagar .docx' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var10" in
+A) menu19 ;;
+B) menu18 ;;
+C) menu20 ;;
+D) echo "$password0" | sudo -S motion 1> /dev/null 2> /dev/null & m10 ;;
+E) echo "$password0" | sudo -S killall motion; m10 ;;
+F) nmtui ; m10 ;;
+G) alsamixer ; m10 ;;
+H) custom3=$(dialog --title 'Brilho de Tela' --backtitle "$bktitle" --inputbox "Digite um valor de 0 a 255:" 10 15 2>&1 > /dev/tty); [ -z "$custom3" ] || { echo "$password0" | sudo -S brightnessctl set "$custom3"; }; m10 ;;
+I) menu054 ;;
+J) menu28 ;;
+K) menu055 ;;
+L) menu29 ;;
+M) menu30 ;;
+X) liminal "st4rt1" "start" ;;
+esac
+}
+
+# STATUS Normal
+function menu01 {
+bat0="Inexistente!"; [ -f /sys/class/power_supply/BAT0/capacity ] && { bat0=$(cat /sys/class/power_supply/BAT0/capacity); }
+bat1="Inexistente!"; [ -f /sys/class/power_supply/BAT1/capacity ] && { bat1=$(cat /sys/class/power_supply/BAT0/capacity); }
+ip2=$(dig @resolver4.opendns.com myip.opendns.com +short)
+var2=$(dialog --title 'Status' --backtitle "$bktitle" --menu "IP Externo: $ip2 \n
+Bateria: $bat0 %" 0 0 0 \
+A '*INXI' \
+B '*Sistema' \
+C '*Temperatura' \
+D '*Armazenamento' \
+E '*S.M.A.R.T.' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && start
+case "$var2" in
+A) inxi1 ;;
+B) menu11 ;;
+C) menu12 ;;
+D) menu13 ;;
+E) menu14 ;;
+X) start ;;
+esac
+}
+
+# STATUS Invertido
+function m3nu01 {
+ip2=$(dig @resolver4.opendns.com myip.opendns.com +short)
+var2=$(dialog --title 'Status' --backtitle "$bktitle" --menu "IP Externo: $ip2" 0 0 0 \
+A '*INXI' \
+B '*Sistema' \
+C '*Temperatura' \
+D '*Armazenamento' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$var2" in
+A) inxi1 ;;
+B) menu11 ;;
+C) menu12 ;;
+D) menu13 ;;
+X) liminal "st4rt1" "start" ;;
+esac
+}
+
+# Status de Sistema
+function menu11 {
+governor=$(cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor || echo "Indisponível!")
+bbalance=$(ps aux | grep "btrfs balance start" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+rrsnap=$(ps aux | grep "rsnapshot" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+rsync1=$(ps aux | grep "rsync" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+cp1=$(ps u | grep "cp" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+noip0=$(ps aux | grep "noip2" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado ou Ausente")
+xorg1=$(ls /tmp/.X11-unix | wc -l)
+
+[ $(which drbdadm 2>/dev/null) ] && [ $(which virt-manager 2>/dev/null) ] && { aswb="sim"; } || { aswb="nao"; }
+
+[ $(which virt-manager 2>/dev/null) ] && { aswd="sim"; } || { aswd="nao"; }
+
+[ -d "/sys/firmware/efi/" ] && {
+  sysd1=$(systemd-analyze | awk 'NR==1{print $5,$4,$8,$7}')
+  sysd2=$(systemd-analyze | awk 'NR==1{print $11,$10,$14,$13}')
+  sysd3=$(systemd-analyze | awk 'NR==1{print $15,$16}')
+} || {
+  sysd1=$(systemd-analyze | awk 'NR==1{print $5,$4,$8,$7}')
+  sysd3=$(systemd-analyze | awk 'NR==1{print $9,$10}')
+  }
+
+TEXTMAIL="Governador de CPU: $governor
+XOrgs Executando: $xorg1
+
+Balance BTRFS: $bbalance
+RSnapshot: $rrsnap
+RSync: $rsync1
+CoPy: $cp1
+
+Tempos de Boot:
+$sysd1
+$sysd2
+Tempo total $sysd3"
+
+dialog --cr-wrap --title "Informações encontradas" --backtitle "$bktitle" --msgbox "$TEXTMAIL" 0 0
+
+[ $? -ne 0 ] && liminal "m3nu01" "menu01"
+
+menu08 "$Recado $TEXTMAIL $Mensagem"
+liminal "m3nu01" "menu01"
+}
+
+function inxi1 {
+desov=$(inxi -F)
+
+menu08 "$Recado $desov $Mensagem"
+liminal "m3nu01" "menu01"
+}
+
+# Processos de Sistema
+function menu03 {
+menu09 smbd && smb1=$prcs
+menu09 apache2 && apache=$prcs
+menu09 cups && cups1=$prcs
+menu09 dwagent && dwagent1=$prcs
+vpn=$(ip a | grep tun 1> /dev/null && echo "Executando" || echo "Parado ou Ausente")
+motion1=$(ps aux | grep "motion" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado ou Ausente")
+menuxx=$(dialog --ok-label 'Ajustar' --backtitle "$bktitle" --title 'Processos de Sistema' --menu " "  0 0 0 \
+A "Samba      : $smb1"  \
+B "Apache2    : $apache" \
+C "CUPS       : $cups1" \
+D "Motion     : $motion1" \
+E "DWAgent    : $dwagent1" \
+F "VPN Client : $vpn" \
+X "Voltar" 2>&1 > /dev/tty )
+
+[ $? -ne 0 ] && liminal "st4rt1" "start"
+case "$menuxx" in
+A) status="$smb1"; processname="Samba"; process="smbd"; menu031 ;;
+B) status="$apache"; processname="Apache2"; process="apache2"; menu031 ;;
+C) status="$cups1"; processname="CUPS"; process="cups"; menu031 ;;
+D) status="$motion1"; processname="Motion"; process="motion"; menu031 ;;
+E) status="$dwagent1"; processname="DWAgent"; process="dwagent"; menu031 ;;
+F) status="$vpn"; processname="VPN Client"; process="openvpn"; menu03 ;;
+X) liminal "st4rt1" "start" ;;
+esac
+}
+
+function menu031 {
+[ "$status" = "Executando" ] && {
+  dialog --title "$processname" --yesno "Deseja reiniciar o processo $processname ?" 6 40
+  [ $? = 0 ] && {
+    echo "$password0" | sudo -S systemctl restart "$process"
+    dialog --title "$processname" --msgbox "O processo $processname foi reiniciado!" 6 40
+  } || {
+    dialog --title "$processname" --yesno "Deseja parar o processo $processname ?" 6 40
+    [ $? = 0 ] && {
+      echo "$password0" | sudo -S systemctl stop "$process"
+      dialog --title "$processname" --msgbox "O processo $processname foi parado!" 6 40
+      }
+  } || {
+    menu03
+    }
+} || {
+  dialog --title "$processname" --yesno "Deseja tentar iniciar o processo $processname ?" 6 40
+  [ $? = 0 ] && {
+    echo "$password0" | sudo -S systemctl start "$process"
+    dialog --title "$processname" --msgbox "Verifique se o $processname iniciou." 6 40
+    }
+}
+
+menu03
+}
+
+# Status de Processos
+function menu09 {
+  prcs=$(echo "$password0" | sudo -S systemctl is-active --quiet $1 && echo "Executando" || echo "Parado ou Ausente")
+}
+
+# Status Temperatura
+function menu12 {
+sensors0=$(sensors || echo "Indisponível!")
+dialog --cr-wrap --backtitle 'Temperatura, Potencia e Rotação de Cooler(s) [Se disponível!]' --msgbox "$sensors0" 0 0
+
+[ $? -ne 0 ] && liminal "m3nu01" "menu01"
+[ "$sensors1" = "Indisponível!" ] && {
+  dialog --title "Erro ao emitir relatório" --msgbox "Sistema incompatível!" 0 0
+} || {
+  menu08 "$Recado $sensors0 $Mensagem"
+  }
+
+liminal "m3nu01" "menu01"
+}
+
+# Status de Consumo dos Discos
+function menu13 {
+sdisks=$(df -Th)
+dialog --cr-wrap --title "Discos encontrados" --backtitle "Status do Armazenamento" --msgbox "$sdisks" 0 0
+[ $? -ne 0 ] && liminal "m3nu01" "menu01"
+menu08 "$Recado $sdisks $Mensagem"
+liminal "m3nu01" "menu01"
+}
+
+# LibATASmart-bin!
+function menu14 {
+menu140 "sda" && dump1=$skd && dumpst1=$stssd
+menu140 "sdb" && dump2=$skd && dumpst2=$stssd
+menu140 "sdc" && dump3=$skd && dumpst3=$stssd
+menu140 "sdd" && dump4=$skd && dumpst4=$stssd
+menu140 "sde" && dump5=$skd && dumpst5=$stssd
+menu140 "sdf" && dump6=$skd && dumpst6=$stssd
+menu140 "sdg" && dump7=$skd && dumpst7=$stssd
+menu140 "sdh" && dump8=$skd && dumpst8=$stssd
+menu140 "sdi" && dump9=$skd && dumpst9=$stssd
+menusk=$(dialog --backtitle "Análise de Atributos SMART!" --title "S.M.A.R.T." --menu ""  0 0 0 \
+"/dev/sda" "$dumpst1" \
+"/dev/sdb" "$dumpst2" \
+"/dev/sdc" "$dumpst3" \
+"/dev/sdd" "$dumpst4" \
+"/dev/sde" "$dumpst5" \
+"/dev/sdf" "$dumpst6" \
+"/dev/sdg" "$dumpst7" \
+"/dev/sdh" "$dumpst8" \
+"/dev/sdi" "$dumpst9" \
+"X Voltar" "" 2>&1 > /dev/tty )
+[ $? -ne 0 ] && {start}
+case "$menusk" in
+"/dev/sda") menu141 "sda" "$dump1" ; menu14 ;;
+"/dev/sdb") menu141 "sdb" "$dump2" ; menu14 ;;
+"/dev/sdc") menu141 "sdc" "$dump3" ; menu14 ;;
+"/dev/sdd") menu141 "sdd" "$dump4" ; menu14 ;;
+"/dev/sde") menu141 "sde" "$dump5" ; menu14 ;;
+"/dev/sdf") menu141 "sdf" "$dump6" ; menu14 ;;
+"/dev/sdg") menu141 "sdg" "$dump7" ; menu14 ;;
+"/dev/sdh") menu141 "sdh" "$dump8" ; menu14 ;;
+"/dev/sdi") menu141 "sdi" "$dump9" ; menu14 ;;
+"X Voltar") menu01 ;;
+esac
+}
+
+function menu140 {
+stssd=$(ls /dev/$1 1> /dev/null 2> /dev/null && echo "Presente" || echo "Ausente")
+[ "$stssd" = "Presente" ] && {
+  skd=$(echo "$password0" | sudo -S skdump /dev/$1 | grep -A40 -P 'ID#' | awk '{print $1,$2,$6}')
+} || {
+  skd=$(echo "Disco ausente!")
+  }
+}
+
+function menu141 {
+dialog --cr-wrap --backtitle /dev/$1 --msgbox "$2" 0 0
+menu08 "$Recado $2 $Mensagem"
+menu14
+}
+
+function menu17 {
+var2=$(dialog --title 'UDPCast' --backtitle "$bktitle" --menu "Escolha o modo!" 0 0 0 \
+A 'Client' \
+B 'Server' \
+X 'Voltar' 2>&1 > /dev/tty )
+[ $? -ne 0 ] && {start}
+case "$var2" in
+A) echo "Modo Cliente. Para sair, precione CTRL + C!" ; udp-receiver --file=/dev/null ;;
+B) echo "Modo Servidor. Para sair, precione CTRL + C!" ; udp-sender --file=/dev/zero ;;
+X) menu05 ;;
+esac
+}
+
+function menu19 {
+VALUE1="//172.20.0.2/backup"
+VALUE2="/mnt/backup"
+VALUE3="admin"
+VALUE4=""
+VALUE5=",domain=WORKGROUP"
+
+VALUE0=$(dialog --help-button --help-label 'Show' --ok-label "Montar" --title "Mounting" --form "Pastas de Redes" 15 50 0 \
+"PATH: " 1 1 "$VALUE1" 1 10 34 0 \
+"MNT:" 2 1 "$VALUE2" 2 10 34 0 \
+"USER:" 3 1 "$VALUE3" 3 10 34 0 \
+"PASS:" 4 1 "$VALUE4" 4 10 34 0 \
+"DOM:" 5 1 "$VALUE5" 5 10 34 0 \
+3>&1 1>&2 2>&3 3>&- > /dev/tty)
+
+case $? in
+  1) m10 ;;
+  2) mntshow1=$(ls /mnt); dialog --title 'MNTs' --msgbox "$mntshow1" 0 0 ; menu19 ;;
+esac
+
+path1=$(echo "$VALUE0" | sed -n 1p)
+mntpt1=$(echo "$VALUE0" | sed -n 2p)
+user1=$(echo "$VALUE0" | sed -n 3p)
+pass1=$(echo "$VALUE0" | sed -n 4p)
+dmn1=$(echo "$VALUE0" | sed -n 5p)
+
+[ -z "$path1" ] || [ -z "$mntpt1" ] || [ -z "$user1" ] || [ -z "$pass1" ] && {
+  dialog --title "ERRO" --msgbox "Não deixe os campos PATH, MNT, USER ou PASS vazios!" 7 30; menu19; }
+
+echa1=$(grep "$mntpt1" -qs /proc/mounts && echo "sim" || echo "nao")
+[ "$echa1" = "sim" ] && {
+  dialog --title "Informação" --msgbox "Caminho em uso! Escolha outro." 7 30
+  menu19
+} || {
+  echo "$password0" | sudo -S mount -t cifs -o user="$user1",password="$pass1""$dmn1",iocharset=utf8,file_mode=0777,dir_mode=0777,noperm "$path1" "$mntpt1"
+  mntshow2=$(df -hT)
+  dialog --title "Caminho montado!" --msgbox "$mntshow2" 25 60
+  m10
+  }
+
+}
+
+function menu18 {
+sahred1=$(dialog --title 'SAMBA' --backtitle "$bktitle" --inputbox "Digite o caminho que deseja compartilhar ou criar:" 10 40 2>&1 > /dev/tty)
+sahred2=$(dialog --title 'SAMBA' --backtitle "$bktitle" --inputbox "Digite o nome que deseja usar no compartilhamento:" 10 40 2>&1 > /dev/tty)
+
+case $? in
+  1) m10 ;;
+  2) mntshow2=$(ls /mnt); dialog --title 'MNTs' --msgbox "$mntshow2" 0 0 ; menu19 ;;
+esac
+
+[ -z "$sahred1" ] || [ -z "$sahred2" ] && { dialog --title "Informação" --msgbox "Nao deixe em branco!" 6 20; menu18; }
+
+echa2=$(cat "/etc/samba/smb.conf" | grep "$sahred1" 1> /dev/null 2> /dev/null && echo "sim" || echo "nao")
+echa3=$(cat "/etc/samba/smb.conf" | grep "$sahred2" 1> /dev/null 2> /dev/null && echo "sim" || echo "nao")
+
+[ "$echa2" = "sim" ] || [ "$echa3" = "sim" ] && { dialog --title "Informação" --msgbox "Esta pasta ou este nome já foi compartilhado! Escolha outro." 7 30; menu18; }
+
+echo "$password0" | sudo -S bash -c "echo '[$sahred2]
+path = $sahred1
+valid users = $password0
+admin users = $password0
+guest ok = no
+writable = yes
+browsable = yes
+create mask = 0777
+force create mode = 0777
+directory mask = 0777
+force directory mode = 0777
+' >> /etc/samba/smb.conf"
+
+  [ -d "$sahred1" ] || { echo "$password0" | sudo -S mkdir "$sahred1"; }
+  echo "$password0" | sudo -S chmod 777 -R "$sahred1"
+  echo "$password0" | sudo -S systemctl restart smbd nmbd
+  dialog --title "Informação" --msgbox "Caminho compartilhado!" 6 20
+  m10
+}
+
+function menu20 {
+  echo "$password0" | sudo -S umount -a -t cifs -l
+  echo "$password0" | sudo -S systemctl stop smbd nmbd
+  mntshow3=$(df -hT)
+  dialog --title "Informação" --msgbox "$mntshow3" 25 60
+  m10
+}
+
+function menu21 {
+resultenp=$(ip a | sed -n '/enp/p' |  awk '!/mac/' | awk '{print $2}' | sed 's/.$//' | grep 'enp')
+for i in $resultenp; do
+  velo=$(echo "$password0" | sudo -S ethtool "$i" | grep Speed)
+  dialog --title 'Velocidades detectadas:' --msgbox "$i $velo" 8 40
+done
+
+liminal "m3nu05" "menu05"
+}
+
+function ping1 {
+  ping -c 1 "$1" | awk 'NR==2{print $7,$8}'
+}
+
+function gauge1 {
+  echo  "$1" | dialog --title "Testando Ping..." --gauge "Aguarde a conclusão!" 8 40
+}
+
+function menu22 {
+Google_P=$(ping1 "8.8.4.4")
+gauge1 "8"
+Google_S=$(ping1 "8.8.8.8")
+gauge1 "14"
+OpenDNS_P=$(ping1 "208.67.222.222")
+gauge1 "19"
+OpenDNS_S=$(ping1 "208.67.220.220")
+gauge1 "22"
+Level3_P=$(ping1 "4.2.2.1")
+gauge1 "24"
+Level3_S=$(ping1 "4.2.2.2")
+gauge1 "28"
+Comodo_P=$(ping1 "8.26.56.26")
+gauge1 "32"
+Comodo_S=$(ping1 "8.20.247.20")
+gauge1 "36"
+DNSWATCH_P=$(ping1 "84.200.69.80")
+gauge1 "42"
+DNSWATCH_S=$(ping1 "84.200.70.40")
+gauge1 "46"
+Quad9_P=$(ping1 "9.9.9.9")
+gauge1 "50"
+Quad9_S=$(ping1 "149.112.112.112")
+gauge1 "57"
+Cloudflare_P=$(ping1 "1.1.1.1")
+gauge1 "67"
+Cloudflare_S=$(ping1 "1.0.0.1")
+gauge1 "74"
+Algar_P=$(ping1 "200.225.197.34")
+gauge1 "79"
+Algar_S=$(ping1 "200.225.197.37")
+gauge1 "85"
+GIGA_P=$(ping1 "189.38.95.95")
+gauge1 "96"
+GIGA_S=$(ping1 "189.38.95.96")
+gauge1 "100"
+
+TEXTAO14="Google 8.8.4.4: $Google_P
+Google 8.8.8.8: $Google_S
+OpenDNS 208.67.222.222: $OpenDNS_P
+OpenDNS 208.67.220.220: $OpenDNS_S
+Level3 4.2.2.1: $Level3_P
+Level3 4.2.2.2: $Level3_S
+Comodo 8.26.56.26: $Comodo_P
+Comodo 8.20.247.20: $Comodo_S
+DNSWATCH 84.200.69.80: $DNSWATCH_P
+DNSWATCH 84.200.70.40: $DNSWATCH_S
+Quad9 9.9.9.9: $Quad9_P
+Quad9 149.112.112.112: $Quad9_S
+Cloudflare 1.1.1.1: $Cloudflare_P
+Cloudflare 1.0.0.1: $Cloudflare_S
+Algar 200.225.197.34: $Algar_P
+Algar 200.225.197.37: $Algar_S
+GigaDNS 189.38.95.95: $GIGA_P
+GigaDNS 189.38.95.96: $GIGA_S"
+
+dialog --title 'Resultados do Ping:' --msgbox "$TEXTAO14" 0 0
+
+menu08 "$Recado $TEXTAO14 $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+function menu23 {
+ipneigh1=$(ip neigh)
+dialog --title 'IP Neigh' --msgbox "$ipneigh1" 0 0
+menu08 "$Recado $ipneigh1 $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+# SpeedTest
+function menu050 {
+dialog --title 'SpeedTest' --backtitle "$bktitle" --msgbox "Pressione Enter para iniciar o teste e aguarde!" 0 0
+speedy=$(curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -)
+dialog --title 'SpeedTest' --backtitle "$bktitle" --msgbox "$speedy" 0 0
+menu08 "$Recado $speedy $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+# Arp-Scan
+function menu0501 {
+dialog --title 'Arp-Scan' --backtitle "$bktitle" --msgbox "Pressione Enter para iniciar o teste e aguarde!" 0 0
+arpscn=$(echo "$password0" | sudo -S arp-scan -l)
+dialog --title 'Arp-Scan' --backtitle "$bktitle" --msgbox "$arpscn" 0 0
+menu08 "$Recado $arpscn $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+#WhoIS
+function menu051 {
+site=$(dialog --title 'WhoIs' --backtitle "$bktitle" --inputbox "Digite o site que deseja localizar informações. Use o seguinte modelo: exemplo.com.br" 10 40 2>&1 > /dev/tty)
+dialog --title "WhoIs" --msgbox "Pressione Enter para iniciar o teste e aguarde!" 0 0
+wis=$(whois "$site")
+dialog --title "WhoIs" --msgbox "$wis" 0 0
+menu08 "$Recado $wis $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+# Traceroute
+function menu052 {
+site=$(dialog --title 'TraceRoute' --backtitle "Identificador de hops/saltos que um computador efetua até acessar um site especificado." --inputbox "Digite o site que deseja analisar os Saltos. Use o seguinte modelo: \n
+exemplo.com.br \n
+A identificação estará concluída quando um (END) surgir no final." 14 40 2>&1 > /dev/tty)
+dialog --title "Traceroute" --msgbox "Pressione Enter para iniciar o teste e aguarde!" 0 0
+trot=$(traceroute "$site")
+dialog --title "Traceroute" --msgbox "$trot" 0 0
+menu08 "$Recado $trot $Mensagem"
+liminal "m3nu05" "menu05"
+}
+
+function menu054 {
+[ "$report" = "0" ] && {
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja habilitar a emissão de relatórios?" 8 40
+    [ $? = 0 ] && {
+      [ -f "$FILE3" ] && {
+        report="1"
+        validmail=$(awk 'NR==1' $FILE3)
+        dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja reutilizar este(s) e-mail(s) anteriormente utilizado(s) para emissão de relatórios? \n \n
+$validmail" 15 40
+          [ $? = 0 ] && {
+            dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Os relatórios somente funcionam nos menus com *!" 0 0
+          } || {
+            validmail=$(dialog --title "Inserir Destinatário" --backtitle "$bktitle" --inputbox "Insira o e-mail para o qual deseja enviar os relatórios gerados! \n \n
+Pode ser mais de um, bastando separá-los com vírgula e espaço. Exemplo: user@mail.com, user2@mail.com" 15 40 2>&1 > /dev/tty)
+             [ -z "$validmail" ] && {
+              dialog --cr-wrap --title "Erro no E-mail!" --backtitle "$bktitle" --msgbox "Digite um e-mail válido!" 0 0
+             } || {
+              echo "$validmail" > "/tmp/.email"
+              report="1"
+              dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Os relatórios somente funcionam nos items com *!" 0 0
+              }
+          }
+      } || {
+        validmail=$(dialog --title "Inserir Destinatário" --backtitle "$bktitle" --inputbox "Insira o e-mail para o qual deseja enviar os relatórios gerados! \n \n
+Pode ser mais de um, bastando separá-los com vírgula e espaço. Exemplo: user@mail.com, user2@mail.com" 15 40 2>&1 > /dev/tty)
+        [ -z "$validmail" ] && {
+          dialog --cr-wrap --title "Erro no E-mail!" --backtitle "$bktitle" --msgbox "Digite um e-mail válido!" 0 0
+        } || {
+          echo "$validmail" > "/tmp/.email"
+          report="1"
+          dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Os relatórios somente funcionam nos items com *!" 0 0
+          }
+      }      
+    } || {
+      echo "a" > /dev/null
+      }
+  } || {
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja trocar o e-mail de emissão de relatórios?" 8 40
+    [ $? = 0 ] && {
+      validmail=$(dialog --title " " --backtitle "$bktitle" --inputbox "Insira o e-mail para o qual deseja enviar os relatórios gerados!" 9 40 2>&1 > /dev/tty)
+      echo "$validmail" > "/tmp/.email"
+      dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Os relatórios somente funcionam nos items com *!" 0 0
+    } || {
+      dialog --title "Confirmação" --backtitle "$bktitle" --yesno "Deseja desativar a emissão de relatórios?" 8 40
+      [ $? = 0 ] && {
+        report="0"
+      } || {
+        echo "a" > /dev/null
+        }
+    }
+}
+
+m10
+#liminal "st4rt1" "start"
+}
+
+function menu055 {
+[ "$report" = "0" ] && {
+  dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Relatórios desativados!" 0 0
+} || {
+  [ -f "$FILE4" ] && {
+    validrelat=$(cat "$FILE4")
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Um relatório salvo foi encontrado. \n \n
+$validrelat \n \n
+Deseja enviá-lo por e-mail?" 20 70
+    [ $? = 0 ] && {
+      menu08 "$validrelat"
+      dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja apagar o relatório salvo?" 8 20
+      [ $? = 0 ] && {
+        dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "O relatório salvo foi apagado!" 0 0
+        rm "$FILE4"
+      } || {
+        echo "a" > /dev/null
+        }
+    } || {
+      dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja apagar o relatório salvo?" 8 20
+      [ $? = 0 ] && {
+        dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "O relatório salvo foi apagado!" 0 0
+        rm "$FILE4"
+        }
+      }
+  } || {
+    dialog --cr-wrap --title "Informação" --backtitle "$bktitle" --msgbox "Nenhum relatório salvo foi encontrado!" 0 0
+    }
+}
+
+m10
+#liminal "m3nu05" "menu05"
+}
+
+# Reinicio
+function menu06 {
+bbalance=$(ps aux | grep "btrfs balance start" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+rrsnap=$(ps aux | grep "rsnapshot" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+rsync1=$(ps aux | grep "rsync" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+cp1=$(ps u | grep "cp" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+datetime=$(date +"%d/%m %H:%M")
+[ "$bbalance" = "Executando" ] || [ "$rrsnap" = "Executando" ] || [ "$rsync1" = "Executando" ] || [ "$cp1" = "Executando" ] && {
+  dialog --cr-wrap --title 'ERRO AO REINICIAR' --backtitle "$bktitle" --msgbox "Reinício bloqueado! \n
+Favor verificar o Status do Sistema ou tente novamente mais tarde." 0 0
+} || {
+  dialog --title 'Reiniciar' --backtitle "$bktitle" --yesno 'Deseja reiniciar este sistema?' 0 0
+  [ $? = 0 ] && {
+    [ "$report" = "1" ] && {
+      dialog --title 'Relatório' --yesno "Deseja enviar um relatório por e-mail sobre este reinício?" 8 40
+      [ $? = 0 ] && {
+        menu08 "$Recado $Recado5 $datetime $Mensagem"
+      } || {
+        echo "a" > /dev/null
+        }
+    }
+  echo "$password0" | sudo -S reboot
+  }
+}
+
+liminal "st4rt1" "start"
+}
+
+# Desligamento
+function menu07 {
+rrsnap=$(ps aux | grep "rsnapshot" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+rsync1=$(ps aux | grep "rsync" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+bbalance=$(ps aux | grep "btrfs balance start" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+cp1=$(ps u | grep "cp" | grep -v grep 1> /dev/null && echo "Executando" || echo "Parado")
+datetime=$(date +"%d/%m %H:%M")
+[ "$bbalance" = "Executando" ] || [ "$rrsnap" = "Executando" ] || [ "$rsync1" = "Executando" ] || [ "$cp1" = "Executando" ] && {
+  dialog --cr-wrap --title 'ERRO AO DESLIGAR' --backtitle 'ERRO AO TENTAR DESLIGAR.' --msgbox "Desligamento bloqueado! \n
+Favor verificar o Status do Sistema ou tente novamente mais tarde." 0 0
+} || {
+  dialog --title 'Desligar' --backtitle 'D E S L I G A R' --yesno 'Deseja desligar este sistema?' 0 0
+  [ $? = 0 ] && {
+    [ "$report" = "1" ] && {
+      dialog --title 'Relatório' --yesno "Deseja enviar um relatório por e-mail sobre este desligamento?" 8 40
+      [ $? = 0 ] && {
+        menu08 "$Recado $Recado6 $datetime $Mensagem"
+      } || {
+        echo "a" > /dev/null
+        }
+    }
+  echo "$password0" | sudo -S shutdown -h now
+  }
+}
+
+liminal "st4rt1" "start"
+}
+
+# Encaminhar relatórios por Email!
+function menu08 {
+echo "$1" > "/tmp/.relat"
+[ "$report" = "0" ] && {
+  [ "$confrel" = "0" ] && {
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Os relatórios não estão ativos. Deseja reativá-los temporariamente?" 8 40
+    [ $? = 0 ] && {
+      [ -f "$FILE3" ] && {
+        validmail=$(awk 'NR==1' $FILE3)
+        dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja reutilizar este(s) e-mail(s) anteriormente utilizado(s) para emissão de relatórios? \n \n
+$validmail" 15 40
+        [ $? = 0 ] && {         
+          echo "$1" | mutt -s "Diagnóstico - $HOSTNAME" "$validmail"
+          dialog --title "Relatório" --msgbox "Relatório enviado com sucesso!" 6 40
+        } || {
+          dialog --title "Relatório" --msgbox "O atual relatório foi salvo! \n
+Utilize o menu 'Ferramentas > Relatórios' para trocar o destinatário. \n \n
+Depois vá em 'Ferramentas > Relatórios Salvos' tentar reenviar este relatório por e-mail." 20 50
+          report="1"
+        }
+      } || {  
+        dialog --title "Relatório" --msgbox "O atual relatório foi salvo! Utilize o menu 'Ferramentas > Relatórios' para trocar o destinatário. \n \n
+Depois vá em 'Ferramentas > Relatórios Salvos' tentar reenviar este relatório por e-mail." 20 50
+        report="1"
+        }
+    } || {
+      confrel="1"
+      }
+  } || {
+    echo "a" > /dev/null
+    }
+} || {
+  validmail=$(awk 'NR==1' $FILE3)
+  dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja enviar este relatório para $validmail?" 8 40
+  [ $? = 0 ] && {
+    echo "$1" | mutt -s "Diagnóstico - $HOSTNAME" "$validmail"
+    dialog --title "Relatório" --msgbox "Relatório enviado com sucesso!" 6 40
+  } || {
+    echo "a" > /dev/null
+    }
+}
+
+}
+
+function menu04 {
+VALUE1=""
+VALUE2=""
+VALUE3=""
+VALUE4="-d WORKGROUP"
+VALUE5=""
+
+VALUE0=$(dialog --ok-label "Conectar" --title " " --form "Conexão RDP" 15 50 0 \
+"IP: " 1 1 "$VALUE1" 1 10 34 0 \
+"USER:" 2 1 "$VALUE2" 2 10 34 0 \
+"PASS:" 3 1 "$VALUE3" 3 10 34 0 \
+"DOM:" 4 1 "$VALUE4" 4 10 34 0 \
+3>&1 1>&2 2>&3 3>&- > /dev/tty)
+[ $? -ne 0 ] && m10
+IP1=$(echo "$VALUE0" | sed -n 1p)
+user2=$(echo "$VALUE0" | sed -n 2p)
+pass2=$(echo "$VALUE0" | sed -n 3p)
+dmn2=$(echo "$VALUE0" | sed -n 4p)
+
+[ -z "$IP1" ] || [ -z "$user2" ] || [ -z "$pass2" ] || [ -z "$dmn2" ] && {
+  dialog --title "ERRO" --msgbox "Não deixe nenhum campo vazio!" 8 40
+  menu05
+} || {
+  echo "rdesktop -u $user2 -p $pass2 $dom $IP1" > /tmp/.rdesktop
+  chmod +x /tmp/.rdesktop
+  xinit /tmp/.rdesktop $* -- :3 vt$XDG_VTNR
+  menu05
+  }
+}
+
+function m1x {
+dialog --title 'F.F.A.' --msgbox "Ferramentas e Funções Avançadas" 0 0
+password3=$(dialog --backtitle "F.F.A.: Ferramentas e Funções Avançadas" --title 'Acesso Restrito' --insecure --passwordbox 'Digite a senha' 0 0 2>&1 > /dev/tty)
+
+[ "$password3" = "$password0" ] && {
+  dialog --title 'Porteiro:' --msgbox "Clift Claft Still, a Porta se Abriu!" 6 40
+  m10
+} || {
+  dialog --title 'Acesso Proibido' --msgbox "Permissão Incorreta" 0 0
+  }
+
+}
+
+function liminal { [ -f "$FILE" ] && { [ "$hash1" = "$hash2" ] || [ "$hash1" = "$hash3" ] && { $2; } || { $1; }; } || { $2; }; }
+
+function menu27 {
+[ -f "/$USER/.DOC/.relat.docx" ] && {
+  [ "$doc_rel"="1" ] && {
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja enviar o relatório para $datetime3.docx?" 8 40
+    [ $? = 0 ] && {
+        echo "$1" >> "/$USER/.DOC/$datetime3.docx"
+        }
+      } || {
+        m10
+      }
+  } || {
+    dialog --title 'relat.docx' --msgbox "Arquivo não encontrado. Abortando." 8 30
+    m10
+    }
+}
+
+function menu28 {
+[ -f "/$USER/.DOC/.relat.docx" ] && {
+  [ "$doc_rel"="1" ] && {
+    datetime=$(date +"%d/%m %H:%M")
+    dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja criar um relatório customizado?" 8 40
+    [ $? = 0 ] && {
+        cusrelat=$(dialog --title 'Custom' --backtitle "$bktitle" --inputbox "O que deseja reportar?" 8 40 "$datetime : " 2>&1 > /dev/tty)
+        menu08 "$Recado $cusrelat $Mensagem"
+        menu27 "
+$cusrelat"
+        m10
+        }
+    } || {
+      m10
+     }
+  } || {
+    dialog --title 'relat.docx' --msgbox "Arquivo não encontrado. Abortando." 8 30
+    m10
+    }
+}
+
+function menu29 {
+[ -f "/$USER/.DOC/.relat.docx" ] && {
+  datetime=$(date +"%d/%m %H:%M")
+  validmail=$(awk 'NR==1' $FILE3)
+
+  TEXTAO15="Boa tarde,
+
+Segue em anexo o Relatório de Atendimentos, com os chamados, manutenções preventivas e manutenções corretivas executadas no período de $datetime3.
+
+Grato,
+José Humberto"
+
+  dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja enviar $datetime3.docx para $validmail?" 8 40
+  [ $? = 0 ] && {
+    echo "$TEXTAO15" | mutt -s "Relatório de Atendimentos - Período $datetime3" -a "/$USER/.DOC/$datetime3.docx" -- "$validmail"
+    }
+
+  dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja enviar um documento diferente para $validmail?" 8 40
+  [ $? = 0 ] && {
+    inputdoc1=$(dialog --title 'Relatório' --backtitle "$bktitle" --inputbox "Insira a data-nome do relatório: " 0 0 "$datetime3" 2>&1 > /dev/tty)
+    echo "$TEXTAO15" | mutt -s "Relatório de Atendimentos - Período $inputdoc1" -a "/$USER/.DOC/$inputdoc1.docx" -- "$validmail"
+    }
+} || {
+  dialog --title 'relat.docx' --msgbox "Arquivo não encontrado. Abortando." 8 30
+  }
+m10
+}
+
+function menu30 {
+[ -f "/$USER/.DOC/.relat.docx" ] && {
+  dialog --title 'Confirmação' --backtitle "$bktitle" --yesno "Deseja APAGAR um relatório.docx?" 8 40
+  [ $? = 0 ] && {
+    inputdoc2=$(dialog --title 'Deleção' --backtitle "$bktitle" --inputbox "Insira a data-nome do relatório: " 0 0 "$datetime3" 2>&1 > /dev/tty)
+    rm "/$USER/.DOC/$inputdoc2.docx"
+    }
+} || {
+  dialog --title 'relat.docx' --msgbox "Arquivo não encontrado. Abortando." 8 30
+  }
+m10
+}
+
+function menu31 {
+diskX=$(dialog --title 'Hiberfile.sys' --backtitle "$bktitle" --inputbox "Insira o dispositivo:" 0 0 "/dev/sda1" 2>&1 > /dev/tty)
+echo "$password0" | sudo -S ntfsfix -b -d "$diskX"
+echo "$password0" | sudo -S mkdir /mnt/tempX
+echo "$password0" | sudo -S mount -t ntfs-3g -o remove_hiberfile "$diskX" "/mnt/tempX"
+liminal "m3nu05" "menu05"
+}
+
+################################################################################
+#                                                                              #
+################################################################################
+
+# Todos os Textões!
+Recado="Diagnóstico do sistema $HOSTNAME, gerado automaticamente pelo $bktitle!
+
+"
+
+Recado2="Em "
+Recado3=" o sistema recebeu as atualizações mais recentes e está em dia com sua segurança! 
+Os pacotes atualizados foram os seguintes:
+
+"
+
+Recado4="
+
+As Atualizações foram concluídas em "
+
+Recado5="O sistema foi reiniciado em "
+
+Recado6="O sistema foi desligado em "
+
+Mensagem="
+
+AVISO LEGAL: Esta mensagem, inclusive seus anexos, pode conter informações confidenciais e deve ser resguardado o devido sigilo de seu conteúdo. Caso a tenha recebido indevidamente, por favor apague-a imediatamente e comunique o remetente. Qualquer forma de utilização, reprodução, retransmissão, alteração, distribuição e/ou divulgação de conteúdo desta mensagem ou de parte dele, sem a autorização expressa de seu remetente, é estritamente proibida."
+
+################################################################################
+#                                                                              #
+################################################################################
+
+# Início do Sistema:
+liminal "st4rt1" "start"
