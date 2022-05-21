@@ -27,15 +27,19 @@ Remember, if you want to have a full desktop like Gnome Shell or KDE, the ISO wi
 more to finish, around from 2-4 Hours for every build made!
 Choose wisely to run less unnecessary builds.
 
-# Customization
+# Settings
 
-Everything under "settings" folder is going to root / inside the final .ISO!
-For example, I put a custom .bashrc code with some options and a custom script to launch my "urbancompasspony/live" code after login.
-This .bashrc will be the default for the default LiveUSB user "ubuntu".
+Everything under "settings" folder is going to "/" inside the final .ISO!
 Everything that is going to show up inside /home/$USER/ need to be placed under "settings/etc/skel".
+And everything for Root user need to be inside /root folder.
 
 With this structure you can change backgrounds or even themes! You can change every folder in the system.
 Be creative here!
+
+EXAMPLES
+
+There are some folders with some codes. They are:
+
 
 # .live
 
