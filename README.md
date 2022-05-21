@@ -57,7 +57,7 @@ There are some folders with some codes. They are:
 -    │   │   └── motion.conf
 -    │   ├── samba (5)
 -    │   │   └── smb.conf
--    │   ├── skel
+-    │   ├── skel (5.1)
 -    │   │   ├── .bashrc (6)
 -    │   │   ├── .custom (7)
 -    │   │   ├── .live (8)
@@ -76,7 +76,7 @@ There are some folders with some codes. They are:
 -    │   ├── disk02
 -    │   ├── disk03
 -    │   ├── server
--    └── root
+-    └── root (15)
 
 -(1) The folder Settings to start.
 
@@ -112,13 +112,7 @@ Use "X Motion" on Menu to turn Off.
 
 -(14) Some default /mnt folders.
 
--(15) Modified Bashrc to run MENU script at startup on ROOT user. Edit this to remove the MENU boot.
-
--(16) Just a lock file.
-
--(17) The main MENU script that substitute the GUI adapted por user root
-
--(18) Put .ovpn files here if there is any, to run as root user.
+-(15) Same as under (5.1)
 
 Use "menu" command to open MENU if it is closed.
 Use "menug" command to update MENU.
