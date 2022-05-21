@@ -44,8 +44,8 @@ There are some folders with some codes. They are:
 .
 ├── build.sh
 └── settings (1)
-    ├── etc
-    │   ├── apache2 (2)
+-    ├── etc
+-    │   ├── apache2 (2)
     │   │   ├── apache2.conf
     │   │   ├── conf-available
     │   │   │   └── other-vhosts-access-log.conf
