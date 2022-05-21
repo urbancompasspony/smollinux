@@ -41,7 +41,6 @@ Be creative here!
 
 There are some folders with some codes. They are:
 
--.
 -├── build.sh
 -└── settings (1)
 -    ├── etc
@@ -84,8 +83,11 @@ There are some folders with some codes. They are:
 -        └── VPN (18)
 
 -(1) The folder Settings to start.
+
 -(2) Apache2 will run a default test page when boot.
+
 -(3) Cups will run a default config. page that allow access to http://localhost:631
+
 -(4) Motion will start a Live Streaming Cam on http://localhost:8081 if running on notebook.
 -Use "X Motion" on Menu to turn Off.
 -(5) SAMBA default configuration for sharing a folder after using config. Samba on Menu
