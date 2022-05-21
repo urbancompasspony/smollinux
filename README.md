@@ -41,7 +41,6 @@ Be creative here!
 
 There are some folders with some codes. They are:
 
--├── build.sh
 -└── settings (1)
 -    ├── etc
 -    │   ├── apache2 (2)
