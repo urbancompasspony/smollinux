@@ -11,7 +11,7 @@ Everything is running under TTY.
 # Dependencies
 
 Using Ubuntu 22.04 LTS as base system, install these packages:
-build-essential debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
+sudo apt install build-essential debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
 
 ### Since Ubuntu 22.04 the packages lupin-casper and lib32gcc are deprecated. We will use casper and lib32gcc-s1 instead.
 
@@ -36,3 +36,10 @@ Everything that is going to show up inside /home/$USER/ need to be placed under 
 
 With this structure you can change backgrounds or even themes! You can change every folder in the system.
 Be creative here!
+
+# .live
+
+There are 2 .live files, the first one is under /skel, so it is for all /home users.
+The second one is under /root, for root.
+
+This will let you to access MENU under NORMAL or ROOT users without problems and for debug purposes!
