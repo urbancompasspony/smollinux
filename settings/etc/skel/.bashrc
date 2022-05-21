@@ -185,9 +185,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
-wget https://raw.githubusercontent.com/urbancompasspony/server/main/live -O /home/$USER/.live
-chmod +x /home/$USER/.live
-/home/$USER/.live
+# AutoLiveMENU
+timedatectl set-timezone America/Bahia
 
+# Default password to "ubuntu"
+echo -ne "$USER\n$USER\n" | sudo passwd $USER 1> /dev/null 2> /dev/null
+# Default samba share password to "ubuntu"
+echo -ne "$USER\n$USER\n" | sudo smbpasswd -a $USER 1> /dev/null 2> /dev/null
+
+[ -f /home/$USER/.live ] && { /home/$USER/.live; }
 alias menu='/home/$USER/.live'
-alias menug='wget https://raw.githubusercontent.com/urbancompasspony/server/main/live -O /home/$USER/.live'
+alias menug='wget https://raw.githubusercontent.com/urbancompasspony/server/main/live -O /home/$USER/.live; chmod +x /home/$USER/.live'
