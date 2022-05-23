@@ -13,7 +13,7 @@ name="smolubuntu"
 version="jammy"
 
 # Remove old compilations
-sudo rm -rfv $HOME/$name;mkdir -pv $HOME/$name
+sudo rm -rf $HOME/$name;mkdir -pv $HOME/$name
 sudo fstrim -va
 
 # Base System
