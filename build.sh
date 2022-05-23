@@ -1,31 +1,30 @@
 #!/bin/bash
 
-# DEPS for Ubuntu 22.04 LTS
+# Dependencies for Ubuntu 22.04 LTS! Any flavour.
 # sudo apt install debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
 
-# Troque pelo nome que desejar! Eu chamei de smolubuntu
+# lupin-casper = deprecated since ubuntu 22.04
+# If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
+
+# the name of the distro
 name="smolubuntu"
 
 # Ubuntu Version
 version="jammy"
 
-# A ISO gerada será em arquitetura amd64, somente.
-# Um MD5SUM também será gerado no final!
-
-# Remoção de arquivos de compilaçoes anteriores caso existam
+# Remove old compilations
 sudo rm -rfv $HOME/$name;mkdir -pv $HOME/$name
 sudo fstrim -va
 
-# Criação do sistema base
+# Base System
 sudo debootstrap \
     --arch=amd64 \
     --variant=minbase \
     --components=main,multiverse,universe \
     $version \
     $HOME/$name/chroot
-#    --include=fish \
 
-# Primeira etapa da montagem do enjaulamento do sistema base
+# Chroot
 sudo mount --bind /dev $HOME/$name/chroot/dev
 sudo mount --bind /run $HOME/$name/chroot/run
 sudo chroot $HOME/$name/chroot mount none -t proc /proc
@@ -33,23 +32,21 @@ sudo chroot $HOME/$name/chroot mount none -t devpts /dev/pts
 sudo chroot $HOME/$name/chroot sh -c "export HOME=/root"
 echo "$name" | sudo tee $HOME/$name/chroot/etc/hostname
 
-# Adição dos repositórios principais do Ubuntu
-# Edite para trocar o repositório base. Recomendo que use a mesma da distro que vai compilar a ISO.
+# Edit it to change for any repository. I recommend to use the same one of the distro that is compiling
 cat <<EOF | sudo tee $HOME/$name/chroot/etc/apt/sources.list
 deb http://us.archive.ubuntu.com/ubuntu/ $version main restricted universe multiverse
 deb http://us.archive.ubuntu.com/ubuntu/ $version-security main restricted universe multiverse
 deb http://us.archive.ubuntu.com/ubuntu/ $version-updates main restricted universe multiverse
 EOF
 
-# Repositórios adicionais
+# Official Repositories Support
 sudo chroot $HOME/$name/chroot apt update
 sudo chroot $HOME/$name/chroot apt install -y software-properties-common
-# PPA 1
-#sudo chroot $HOME/$name/chroot add-apt-repository -y ppa:usuário/programa
-# PPA 2
-#sudo chroot $HOME/$name/chroot add-apt-repository -y ppa:usuário/programa
 
-# Segunda etapa da montagem do enjaulamento
+# Add PPAs Here
+#sudo chroot $HOME/$name/chroot add-apt-repository -y ppa:usuário/aplicacao
+
+# Chroot 2
 sudo chroot $HOME/$name/chroot apt update
 sudo chroot $HOME/$name/chroot apt install -y systemd-sysv
 sudo chroot $HOME/$name/chroot sh -c "dbus-uuidgen > /etc/machine-id"
@@ -57,33 +54,55 @@ sudo chroot $HOME/$name/chroot ln -fs /etc/machine-id /var/lib/dbus/machine-id
 sudo chroot $HOME/$name/chroot dpkg-divert --local --rename --add /sbin/initctl
 sudo chroot $HOME/$name/chroot ln -s /bin/true /sbin/initctl
 
-# Variáveis de ambiente para execução automatizada do script
+# Ambiance Strings
 sudo chroot $HOME/$name/chroot sh -c "echo 'grub-pc grub-pc/install_devices_empty   boolean true' | debconf-set-selections"
 sudo chroot $HOME/$name/chroot sh -c "echo 'locales locales/locales_to_be_generated multiselect pt_BR.UTF-8 UTF-8' | debconf-set-selections"
 sudo chroot $HOME/$name/chroot sh -c "echo 'locales locales/default_environment_locale select pt_BR.UTF-8' | debconf-set-selections"
 sudo chroot $HOME/$name/chroot sh -c "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections"
 sudo chroot $HOME/$name/chroot sh -c "echo 'resolvconf resolvconf/linkify-resolvconf boolean false' | debconf-set-selections"
 
-# Programas comuns
+# Desktop Environment
+# FOr example, Ubuntu MATE.
+#sudo chroot $HOME/$name/chroot apt-mark hold gnome-shell
+#sudo chroot $HOME/$name/chroot apt install -y ubuntu-mate-desktop
+
+# Essential Packages - Do not remove them to not create problems.
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    casper \
+   dkms \
    discover \
+   lib32gcc-s1 \
    laptop-detect \
    linux-generic \
    locales \
-   net-tools \
-   network-manager \
    os-prober \
    resolvconf \
+   grub-efi-amd64-signed \
    ubuntu-standard \
+   b43-fwcutter \
+   bcmwl-kernel-source \
+   net-tools \
+   network-manager \
+   wireless-tools
+
+# User interface dependent applications that require a --no-install-recommends flag to not install a full desktop environment!
+sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
+   caja \
+   xorg \
+   xinit \
+   pluma \
+   gnome-disk-utility \
+   epiphany-browser \
+   terminator --no-install-recommends
+
+# User apps - Optional packages
+sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
+   openbox \
    ubuntu-restricted-extras \
-   wireless-tools \
-   lib32gcc-s1 \
    inetutils-ping \
    net-tools \
    ethtool \
    eom \
-   grub-efi-amd64-signed \
    libelf-dev \
    tcpdump \
    haveged \
@@ -96,9 +115,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    speedtest-cli \
    stress \
    fsarchiver \
-   dkms \
-   b43-fwcutter \
-   bcmwl-kernel-source \
    testdisk \
    libatasmart-bin \
    openssh-server \
@@ -123,7 +139,6 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    inxi \
    rsync \
    x11-xserver-utils \
-   openbox \
    obconf \
    xserver-xorg-video-all \
    xserver-xorg-input-all \
@@ -134,45 +149,23 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    printer-driver-all \
    motion \
    openvpn \
-   apache2
+   apache2 \
+   gparted \
+   gnome-maps \
+   gnome-weather \
+   hardinfo \
+   drawing
 
-#   xserver-xorg-input-libinput \
-#   xserver-xorg-input-evdev \
-#   xserver-xorg-input-mouse \
-#   xserver-xorg-input-synaptics
-   
-# lupin-casper = deprecated since ubuntu 22.04
-# If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
-
-# Ambiente de desktop
-# Adicione aqui o ambiente desktop desejado! No exemplo, Ubuntu MATE.
-#sudo chroot $HOME/$name/chroot apt-mark hold gnome-shell
-#sudo chroot $HOME/$name/chroot apt install -y ubuntu-mate-desktop
-
-# Programas --no-install-recommends
-sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   caja \
-   xorg \
-   xinit \
-   pluma \
-   gnome-disk-utility \
-   terminator --no-install-recommends
-
-# WINE
+# WINE { If you do not want it, comment bellow }
 sudo chroot $HOME/$name/chroot dpkg --add-architecture i386
 sudo chroot $HOME/$name/chroot apt update
 sudo chroot $HOME/$name/chroot apt install -y \
    wine
 
-#   gvfs-backends
-
-# Sem cuidado o inxi puxa pacotes do xorg e xinit desnecessariamente.
-#sudo chroot $HOME/$name/chroot apt install -y --no-install-recommends
-
 # bcmwl-kernel-source = ERROR
-# Use it when booting macbooks.
+# Use it when booting on macbooks to have wifi.
 
-# Ubiquity(instalador do sistema, caso queira que essa ISO seja instalável!)
+# Ubiquity (Uncomment to allow installation mode! Default, this ISO will run only LIVE)
 #sudo chroot $HOME/$name/chroot apt install -y \
 #    gparted \
 #    ubiquity \
@@ -180,22 +173,20 @@ sudo chroot $HOME/$name/chroot apt install -y \
 #    ubiquity-frontend-gtk \
 #    ubiquity-slideshow-ubuntu-mate
 
-# Remoção de pacotes desnecessários
+# Removing packages here
 sudo chroot $HOME/ubuntu-custom/chroot apt autoremove --purge -y \
    gnome-terminal \
    unattended-upgrades \
    snapd
-#    programa2 \
-#    programa3
 
-# Atualização do sistema
+# A little last update of the system
 sudo chroot $HOME/$name/chroot apt dist-upgrade -y
 
-# Configuração do Plymouth - Caso queira um. Não esqueça de editar lá embaixo para adicionar quiet splash ao sistema.
+# Config. of Plymouth if one. Put quit splash bellow on GRUB config.
 #sudo chroot $HOME/$name/chroot sh -c "update-alternatives --set default.plymouth /usr/share/plymouth/themes/bgrt/bgrt.plymouth"
 #sudo chroot $HOME/$name/chroot update-initramfs -u -k all
 
-# Reconfiguração da rede
+# Reconfiguration of LAN
 sudo chroot $HOME/$name/chroot apt install --reinstall resolvconf
 cat <<EOF | sudo tee $HOME/$name/chroot/etc/NetworkManager/NetworkManager.conf
 [main]
@@ -207,7 +198,7 @@ managed=false
 EOF
 sudo chroot $HOME/$name/chroot dpkg-reconfigure network-manager
 
-# Desmontagem do enjaulamento
+# Chroot 3
 sudo chroot $HOME/$name/chroot truncate -s 0 /etc/machine-id
 sudo chroot $HOME/$name/chroot rm /sbin/initctl
 sudo chroot $HOME/$name/chroot dpkg-divert --rename --remove /sbin/initctl
@@ -219,27 +210,26 @@ sudo chroot $HOME/$name/chroot sh -c "export HISTSIZE=0"
 sudo umount $HOME/$name/chroot/dev
 sudo umount $HOME/$name/chroot/run
 
-# Configuração do GRUB
+# Configuration of GRUB
 echo "RESUME=none" | sudo tee $HOME/$name/chroot/etc/initramfs-tools/conf.d/resume
 echo "FRAMEBUFFER=y" | sudo tee $HOME/$name/chroot/etc/initramfs-tools/conf.d/splash
 
-# Layout português brasileiro para o teclado!
+# Layout brazillian portuguese for keyboard
 sudo sed -i 's/us/br/g' $HOME/$name/chroot/etc/default/keyboard
 
-# Arquivos de configuração do sistema
+# Putting SETTINGS inside ISO.
 sudo cp -rfv settings/* $HOME/$name/chroot/
 
-# Criação dos arquivos de inicialização da imagem de instalação
+# Initialization image files
 cd $HOME/$name
 mkdir -pv image/{boot/grub,casper,isolinux,preseed}
 
-# Kernel
+# Kernel Here
 sudo cp chroot/boot/vmlinuz image/casper/vmlinuz
-sudo cp chroot/boot/`ls -t1 chroot/boot/ |  head -n 1` image/casper/initrd
+sudo cp chroot/boot/`ls -t1 chroot/boot/ | head -n 1` image/casper/initrd
 touch image/$name
 
-# GRUB - É aqui que você tambem pode adicionar novas entradas, como nomodeset=0 para NVIDIA e afins.
-# Por padrão é gerado apenas 2 entradas: Normal e Recovery mode.
+# GRUB MENU HERE
 cat <<EOF > image/isolinux/grub.cfg
 search --set=root --file /$name
 insmod all_video
@@ -285,6 +275,7 @@ menuentry "Shutdown" {halt}
 EOF
 
 # Loopback
+# GRUB MENU HERE TOO
 cat <<EOF > image/boot/grub/loopback.cfg
 menuentry "Normal" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
@@ -298,29 +289,22 @@ menuentry "Recovery Mode - Safe Graphics" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
    initrd /casper/initrd
 }
-
 menuentry " " {set gfxpayload=keep}
-
 menuentry "Copy to RAM" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
    initrd /casper/initrd
 }
-
 menuentry " " {set gfxpayload=keep}
-
 menuentry "NVIDIA Legacy" {
    linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
    initrd /casper/initrd
 }
-
 menuentry " " {set gfxpayload=keep}
-
 menuentry "Reboot" {reboot}
 menuentry "Shutdown" {halt}
 EOF
 
-# É aqui o quiet splash caso deseje ter um!
-# Coloque antes de "loglevel=0" na linha sed, para mante-lo. Default: removido.
+# If you want splash, put here after "loglevel=0" on sed line
 # Preesed
 cat <<EOF > image/preseed/$name.seed
 # Success command
@@ -329,7 +313,7 @@ sed -i 's/quiet splash/loglevel=0 logo.nologo vt.global_cursor_default=0 mitigat
 chroot /target update-grub
 EOF
 
-# Arquivos de manifesto
+# Manifest file
 sudo chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee image/casper/filesystem.manifest
 sudo cp -v image/casper/filesystem.manifest image/casper/filesystem.manifest-desktop
 sudo sed -i '/ubiquity/d' image/casper/filesystem.manifest-desktop
@@ -337,20 +321,14 @@ sudo sed -i '/casper/d' image/casper/filesystem.manifest-desktop
 sudo sed -i '/discover/d' image/casper/filesystem.manifest-desktop
 sudo sed -i '/laptop-detect/d' image/casper/filesystem.manifest-desktop
 sudo sed -i '/os-prober/d' image/casper/filesystem.manifest-desktop
-#echo "\
-#programa1 \
-#programa2 \
-#programa3" | sudo tee image/casper/filesystem.manifest-remove
 
-####################################################################################
-# DAQUI PRA BAIXO NÃO MEXA EM NADA A MENOS QUE SAIBA EXATAMENTE O QUE ESTÁ FAZENDO!#
-####################################################################################
+##################################################################
+# BELOW DO NOT EDIT NOTHING, ONLY IF YOU KNOW WHAT ARE YOU DOING #
+##################################################################
 
-# SquashFS
 sudo mksquashfs chroot image/casper/filesystem.squashfs -comp xz
 printf $(sudo du -sx --block-size=1 chroot | cut -f1) > image/casper/filesystem.size
 
-# Definições de disco
 cat <<EOF > image/README.diskdefines
 #define DISKNAME  $name
 #define TYPE  binary
@@ -363,7 +341,6 @@ cat <<EOF > image/README.diskdefines
 #define TOTALNUM0  1
 EOF
 
-# Geração do GRUB para imagem de instalação
 cd $HOME/$name/image
 grub-mkstandalone \
    --format=x86_64-efi \
@@ -386,16 +363,15 @@ grub-mkstandalone \
    --locales="" \
    --fonts="" \
    "boot/grub/grub.cfg=isolinux/grub.cfg"
+
 cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
 
-# Geração do MD5 interno da imagem de instalação
 sudo /bin/bash -c '(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt" > md5sum.txt)'
 
-# Limpeza da build
 sudo rm -rfv ../chroot
 
-# Compilação da imagem de instalação
 mkdir -pv ../iso
+
 sudo xorriso \
    -as mkisofs \
    -iso-level 3 \
@@ -418,5 +394,4 @@ sudo xorriso \
       /boot/grub/bios.img=isolinux/bios.img \
       /EFI/efiboot.img=isolinux/efiboot.img
 
-# Geração do MD5 externo da imagem de instalação.
 md5sum ../iso/$name-22.04-amd64.iso > ../iso/$name-22.04-amd64.md5
