@@ -12,6 +12,9 @@ Update: build-ssh let you create a simple basic liveISO for virtual machines.
 When booting, it will launch a SSH Server with user and password Ubuntu.
 Put an interface bridge plus another one "normal" and, with this distro, you will access the host system through this live VM.
 
+Use build-ssh with setting-ssh; or build with settings.
+They are here together to be a lot simple to keep the code!
+
 # Dependencies
 
 Using Ubuntu 22.04 LTS as base system, install these packages:
