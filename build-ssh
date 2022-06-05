@@ -150,7 +150,7 @@ echo "FRAMEBUFFER=y" | sudo tee $HOME/$name/chroot/etc/initramfs-tools/conf.d/sp
 sudo sed -i 's/us/br/g' $HOME/$name/chroot/etc/default/keyboard
 
 # Putting SETTINGS inside ISO.
-sudo cp -rfv settings/* $HOME/$name/chroot/
+sudo cp -rfv settings-ssh/* $HOME/$name/chroot/
 
 # Initialization image files
 cd $HOME/$name
