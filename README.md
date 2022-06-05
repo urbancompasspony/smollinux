@@ -8,6 +8,10 @@ The default values creates a .ISO that contains auto-login and auto-executes my 
 For now it will create somenthing that has 1.1 Gb and just OpenBox as option to startup some GUI. 
 Everything is running under TTY.
 
+Update: build-ssh let you create a simple basic liveISO for virtual machines.
+When booting, it will launch a SSH Server with user and password Ubuntu.
+Put an interface bridge plus another one "normal" and, with this distro, you will access the host system through this live VM.
+
 # Dependencies
 
 Using Ubuntu 22.04 LTS as base system, install these packages:
