@@ -103,6 +103,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    net-tools \
    ethtool \
    eom \
+   docker.io \
    libelf-dev \
    tcpdump \
    haveged \
@@ -127,6 +128,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    mutt \
    udpcast \
    htop \
+   btop \
    sshpass \
    macchanger \
    alsa-base \
