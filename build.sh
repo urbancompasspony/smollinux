@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Dependencies for Ubuntu 22.04 LTS! Any flavour.
-# sudo apt install debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
+# sudo apt install debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1 grub-pc grub-pc-bin grub-imageboot
 
 # lupin-casper = deprecated since ubuntu 22.04
 # If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
