@@ -168,7 +168,8 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    bridge-utils \
    virt-manager \
    ovmf \
-   dnsmasq
+   dnsmasq \
+   nmap
 
 # WINE { If you do not want it, comment bellow }
 sudo chroot $HOME/$name/chroot dpkg --add-architecture i386
