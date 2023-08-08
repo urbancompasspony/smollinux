@@ -121,6 +121,7 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    openssh-server \
    dialog \
    curl \
+   wget \
    lm-sensors \
    whois \
    arp-scan \
@@ -189,7 +190,7 @@ sudo chroot $HOME/$name/chroot apt install -y \
 #    ubiquity-slideshow-ubuntu-mate
 
 # Removing packages here
-sudo chroot $HOME/ubuntu-custom/chroot apt autoremove --purge -y \
+sudo chroot $HOME/$name/chroot apt autoremove --purge -y \
    gnome-terminal \
    unattended-upgrades \
    snapd
@@ -200,6 +201,9 @@ sudo chroot $HOME/$name/chroot apt dist-upgrade -y
 # Config. of Plymouth if one. Put quit splash bellow on GRUB config.
 #sudo chroot $HOME/$name/chroot sh -c "update-alternatives --set default.plymouth /usr/share/plymouth/themes/bgrt/bgrt.plymouth"
 #sudo chroot $HOME/$name/chroot update-initramfs -u -k all
+
+# Disabling some systemd processes to run smooth!
+sudo chroot $HOME/$name/chroot systemctl disable qemu-kvm docker libvirtd containerd cups casper-md5check
 
 # Reconfiguration of LAN
 sudo chroot $HOME/$name/chroot apt install --reinstall resolvconf
