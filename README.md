@@ -18,7 +18,8 @@ They are here together to be a lot simple to keep the code!
 # Dependencies
 
 Using Ubuntu 22.04 LTS as base system, install these packages:
-sudo apt install build-essential debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1
+
+sudo apt install build-essential debootstrap mtools squashfs-tools xorriso casper lib32gcc-s1 grub-pc
 
 ### Since Ubuntu 22.04 the packages lupin-casper and lib32gcc are deprecated. We will use casper and lib32gcc-s1 instead.
 
