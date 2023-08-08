@@ -99,9 +99,9 @@ fi
 
 if [ "$color_prompt" = yes ]; then
 
-PS1="$BG┌─[$BC\u$BG]$BR@$BG[$BB\h$BG]:$BG[$BY\w$BG] \n└──╼ $ $NONE"
+#PS1="$BG┌─[$BC\u$BG]$BR@$BG[$BB\h$BG]:$BG[$BY\w$BG] \n└──╼ $ $NONE"
 
-#PS1="$BK┌─$BK[$BR\u$BK]$BR@$BK[$BR\h$BK]$BR:$BK[$BR\w$BK] $BK \n└──╼ $BR$ $NONE"
+PS1="$BK┌─$BK[$BR\u$BK]$BR@$BK[$BR\h$BK]$BR:$BK[$BR\w$BK] $BK \n└──╼ $BR$ $NONE"
 
 #BK="\[\033[1;30m\]" # Bold+Black (Negrito+Preto)
 #BR="\[\033[1;31m\]" # Bold+Red (Negrito+Vermelho)
@@ -193,6 +193,13 @@ echo -ne "$USER\n$USER\n" | sudo passwd $USER 1> /dev/null 2> /dev/null
 # Default samba share password to "ubuntu"
 echo -ne "$USER\n$USER\n" | sudo smbpasswd -a $USER 1> /dev/null 2> /dev/null
 
-[ -f /home/$USER/.live ] && { /home/$USER/.live; }
-alias menu='/home/$USER/.live'
-alias menug='wget https://raw.githubusercontent.com/urbancompasspony/server/main/live -O /home/$USER/.live; chmod +x /home/$USER/.live'
+[ -f /$USER/.live ] && { /$USER/.live; }
+alias menu='/$USER/.live'
+alias srv='curl -sSL https://srv.linuxuniverse.com.br | bash'
+
+#alias singlenmap="echo 'sudo nmap -Pn --script vuln --exclude 9100 -p1-9099,9101-65535 IP'"
+alias singlenmap="sudo nmap -Pn --script vuln --exclude 9100 -p1-9099,9101-65535"
+
+# Check my IP over LAN and WAN
+alias iplan="hostname -I | awk '{print $1}'"
+alias ipwan="dig @resolver4.opendns.com myip.opendns.com +short"
