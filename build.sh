@@ -6,23 +6,28 @@
 # lupin-casper = deprecated since ubuntu 22.04
 # If using ubuntu 21.10 or below, use lupin-casper instead of casper and use lib32gcc instead of lib32gcc-s1!
 
+# ============================================================================ #
+
 # the name of the distro
 name="smolubuntu"
 
 # Ubuntu Version
 version="jammy"
 
+# ============================================================================ #
+
 # Remove old compilations
-sudo rm -rf $HOME/$name;mkdir -pv $HOME/$name
+sudo rm -rf $HOME/$name
+mkdir -pv $HOME/$name
 sudo fstrim -va
 
 # Base System
 sudo debootstrap \
-    --arch=amd64 \
-    --variant=minbase \
-    --components=main,multiverse,universe \
-    $version \
-    $HOME/$name/chroot
+  --arch=amd64 \
+  --variant=minbase \
+  --components=main,multiverse,universe \
+  $version \
+  $HOME/$name/chroot
 
 # Chroot
 sudo mount --bind /dev $HOME/$name/chroot/dev
@@ -68,132 +73,132 @@ sudo chroot $HOME/$name/chroot sh -c "echo 'resolvconf resolvconf/linkify-resolv
 
 # Essential Packages - Do not remove them to not create problems.
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   casper \
-   dkms \
-   discover \
-   lib32gcc-s1 \
-   laptop-detect \
-   linux-generic \
-   locales \
-   os-prober \
-   resolvconf \
-   grub-efi-amd64-signed \
-   ubuntu-standard \
-   b43-fwcutter \
-   bcmwl-kernel-source \
-   net-tools \
-   network-manager \
-   wireless-tools
+  casper \
+  dkms \
+  discover \
+  lib32gcc-s1 \
+  laptop-detect \
+  linux-generic \
+  locales \
+  os-prober \
+  resolvconf \
+  grub-efi-amd64-signed \
+  ubuntu-standard \
+  b43-fwcutter \
+  bcmwl-kernel-source \
+  net-tools \
+  network-manager \
+  wireless-tools
 
 # User interface dependent applications that require a --no-install-recommends flag to not install a full desktop environment!
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   caja \
-   xorg \
-   xinit \
-   pluma \
-   gnome-disk-utility \
-   epiphany-browser \
-   terminator --no-install-recommends
+  caja \
+  xorg \
+  xinit \
+  pluma \
+  gnome-disk-utility \
+  epiphany-browser \
+  terminator --no-install-recommends
 
 # User apps - Optional packages
 sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
-   openbox \
-   ubuntu-restricted-extras \
-   inetutils-ping \
-   net-tools \
-   ethtool \
-   eom \
-   docker.io \
-   libelf-dev \
-   tcpdump \
-   haveged \
-   iotop \
-   testdisk \
-   netdiscover \
-   samba \
-   samba-common \
-   cifs-utils \
-   speedtest-cli \
-   stress \
-   fsarchiver \
-   testdisk \
-   libatasmart-bin \
-   openssh-server \
-   dialog \
-   curl \
-   wget \
-   lm-sensors \
-   whois \
-   arp-scan \
-   traceroute \
-   mutt \
-   udpcast \
-   htop \
-   btop \
-   sshpass \
-   macchanger \
-   alsa-base \
-   pulseaudio \
-   w3m \
-   w3m-img \
-   rdesktop \
-   libgtk2.0-bin \
-   xterm \
-   inxi \
-   rsync \
-   x11-xserver-utils \
-   obconf \
-   xserver-xorg-video-all \
-   xserver-xorg-input-all \
-   apt-utils \
-   btrfs-progs \
-   brightnessctl \
-   cups \
-   printer-driver-all \
-   motion \
-   openvpn \
-   apache2 \
-   gparted \
-   gnome-maps \
-   gnome-weather \
-   hardinfo \
-   drawing \
-   docker.io \
-   qemu-system \
-   qemu-utils \
-   qemu-user \
-   qemu-kvm \
-   qemu-guest-agent \
-   libvirt-clients \
-   libvirt-daemon-system \
-   bridge-utils \
-   virt-manager \
-   ovmf \
-   dnsmasq \
-   nmap
+  openbox \
+  ubuntu-restricted-extras \
+  inetutils-ping \
+  net-tools \
+  ethtool \
+  eom \
+  docker.io \
+  libelf-dev \
+  tcpdump \
+  haveged \
+  iotop \
+  testdisk \
+  netdiscover \
+  samba \
+  samba-common \
+  cifs-utils \
+  speedtest-cli \
+  stress \
+  fsarchiver \
+  testdisk \
+  libatasmart-bin \
+  openssh-server \
+  dialog \
+  curl \
+  wget \
+  lm-sensors \
+  whois \
+  arp-scan \
+  traceroute \
+  mutt \
+  udpcast \
+  htop \
+  btop \
+  sshpass \
+  macchanger \
+  alsa-base \
+  pulseaudio \
+  w3m \
+  w3m-img \
+  rdesktop \
+  libgtk2.0-bin \
+  xterm \
+  inxi \
+  rsync \
+  x11-xserver-utils \
+  obconf \
+  xserver-xorg-video-all \
+  xserver-xorg-input-all \
+  apt-utils \
+  btrfs-progs \
+  brightnessctl \
+  cups \
+  printer-driver-all \
+  motion \
+  openvpn \
+  apache2 \
+  gparted \
+  gnome-maps \
+  gnome-weather \
+  hardinfo \
+  drawing \
+  docker.io \
+  qemu-system \
+  qemu-utils \
+  qemu-user \
+  qemu-kvm \
+  qemu-guest-agent \
+  libvirt-clients \
+  libvirt-daemon-system \
+  bridge-utils \
+  virt-manager \
+  ovmf \
+  dnsmasq \
+  nmap
 
 # WINE { If you do not want it, comment bellow }
 sudo chroot $HOME/$name/chroot dpkg --add-architecture i386
 sudo chroot $HOME/$name/chroot apt update
 sudo chroot $HOME/$name/chroot apt install -y \
-   wine
+  wine
 
 # bcmwl-kernel-source = ERROR
 # Use it when booting on macbooks to have wifi.
 
 # Ubiquity (Uncomment to allow installation mode! Default, this ISO will run only LIVE)
 #sudo chroot $HOME/$name/chroot apt install -y \
-#    gparted \
-#    ubiquity \
-#    ubiquity-casper \
-#    ubiquity-frontend-gtk \
-#    ubiquity-slideshow-ubuntu-mate
+#  gparted \
+#  ubiquity \
+#  ubiquity-casper \
+#  ubiquity-frontend-gtk \
+#  ubiquity-slideshow-ubuntu-mate
 
 # Removing packages here
 sudo chroot $HOME/$name/chroot apt autoremove --purge -y \
-   gnome-terminal \
-   unattended-upgrades \
-   snapd
+  gnome-terminal \
+  unattended-upgrades \
+  snapd
 
 # A little last update of the system
 sudo chroot $HOME/$name/chroot apt dist-upgrade -y
@@ -203,7 +208,13 @@ sudo chroot $HOME/$name/chroot apt dist-upgrade -y
 #sudo chroot $HOME/$name/chroot update-initramfs -u -k all
 
 # Disabling some systemd processes to run smooth!
-sudo chroot $HOME/$name/chroot systemctl disable qemu-kvm docker libvirtd containerd cups casper-md5check
+sudo chroot $HOME/$name/chroot systemctl disable \
+  qemu-kvm \
+  docker \
+  libvirtd \
+  containerd \
+  cups \
+  casper-md5check
 
 # Reconfiguration of LAN
 sudo chroot $HOME/$name/chroot apt install --reinstall resolvconf
@@ -256,37 +267,37 @@ set default="0"
 set timeout=15
 
 if loadfont /boot/grub/unicode.pf2 ; then
-    insmod gfxmenu
-	insmod jpeg
-	insmod png
-	set gfxmode=auto
-	insmod efi_gop
-	insmod efi_uga
-	insmod gfxterm
-	terminal_output gfxterm
+  insmod gfxmenu
+  insmod jpeg
+  insmod png
+  set gfxmode=auto
+  insmod efi_gop
+  insmod efi_uga
+  insmod gfxterm
+  terminal_output gfxterm
 fi
 
 menuentry "Normal" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
+  initrd /casper/initrd
 }
 menuentry "Recovery Mode" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
+  initrd /casper/initrd
 }
 menuentry "Recovery Mode - Safe Graphics" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "Copy to RAM" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "NVIDIA Legacy" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "Reboot" {reboot}
@@ -297,26 +308,26 @@ EOF
 # GRUB MENU HERE TOO
 cat <<EOF > image/boot/grub/loopback.cfg
 menuentry "Normal" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR ---
+  initrd /casper/initrd
 }
 menuentry "Recovery Mode" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR recovery ---
+  initrd /casper/initrd
 }
 menuentry "Recovery Mode - Safe Graphics" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR nomodeset recovery ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "Copy to RAM" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR toram ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "NVIDIA Legacy" {
-   linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
-   initrd /casper/initrd
+  linux /casper/vmlinuz file=/cdrom/preseed/$name.seed boot=casper locale=pt_BR modprobe.blacklist=nvidia,nvidia_uvm,nvidia_drm,nvidia_modeset ---
+  initrd /casper/initrd
 }
 menuentry " " {set gfxpayload=keep}
 menuentry "Reboot" {reboot}
@@ -362,26 +373,26 @@ EOF
 
 cd $HOME/$name/image
 grub-mkstandalone \
-   --format=x86_64-efi \
-   --output=isolinux/bootx64.efi \
-   --locales="" \
-   --fonts="" \
-   "boot/grub/grub.cfg=isolinux/grub.cfg"
+  --format=x86_64-efi \
+  --output=isolinux/bootx64.efi \
+  --locales="" \
+  --fonts="" \
+  "boot/grub/grub.cfg=isolinux/grub.cfg"
 (
-   cd isolinux && \
-   dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
-   sudo mkfs.vfat efiboot.img && \
-   mmd -i efiboot.img efi efi/boot && \
-   mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
+  cd isolinux && \
+  dd if=/dev/zero of=efiboot.img bs=1M count=10 && \
+  sudo mkfs.vfat efiboot.img && \
+  mmd -i efiboot.img efi efi/boot && \
+  mcopy -i efiboot.img ./bootx64.efi ::efi/boot/
 )
 grub-mkstandalone \
-   --format=i386-pc \
-   --output=isolinux/core.img \
-   --install-modules="linux16 linux normal iso9660 biosdisk memdisk search tar ls" \
-   --modules="linux16 linux normal iso9660 biosdisk search" \
-   --locales="" \
-   --fonts="" \
-   "boot/grub/grub.cfg=isolinux/grub.cfg"
+  --format=i386-pc \
+  --output=isolinux/core.img \
+  --install-modules="linux16 linux normal iso9660 biosdisk memdisk search tar ls" \
+  --modules="linux16 linux normal iso9660 biosdisk search" \
+  --locales="" \
+  --fonts="" \
+  "boot/grub/grub.cfg=isolinux/grub.cfg"
 
 cat /usr/lib/grub/i386-pc/cdboot.img isolinux/core.img > isolinux/bios.img
 
@@ -392,25 +403,25 @@ sudo rm -rfv ../chroot
 mkdir -pv ../iso
 
 sudo xorriso \
-   -as mkisofs \
-   -iso-level 3 \
-   -full-iso9660-filenames \
-   -volid "$name" \
-   -eltorito-boot boot/grub/bios.img \
-   -no-emul-boot \
-   -boot-load-size 4 \
-   -boot-info-table \
-   --eltorito-catalog boot/grub/boot.cat \
-   --grub2-boot-info \
-   --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
-   -eltorito-alt-boot \
-   -e EFI/efiboot.img \
-   -no-emul-boot \
-   -append_partition 2 0xef isolinux/efiboot.img \
-   -output "../iso/$name-22.04-amd64.iso" \
-   -graft-points \
-      "." \
-      /boot/grub/bios.img=isolinux/bios.img \
-      /EFI/efiboot.img=isolinux/efiboot.img
+  -as mkisofs \
+  -iso-level 3 \
+  -full-iso9660-filenames \
+  -volid "$name" \
+  -eltorito-boot boot/grub/bios.img \
+  -no-emul-boot \
+  -boot-load-size 4 \
+  -boot-info-table \
+  --eltorito-catalog boot/grub/boot.cat \
+  --grub2-boot-info \
+  --grub2-mbr /usr/lib/grub/i386-pc/boot_hybrid.img \
+  -eltorito-alt-boot \
+  -e EFI/efiboot.img \
+  -no-emul-boot \
+  -append_partition 2 0xef isolinux/efiboot.img \
+  -output "../iso/$name-22.04-amd64.iso" \
+  -graft-points \
+  "." \
+    /boot/grub/bios.img=isolinux/bios.img \
+    /EFI/efiboot.img=isolinux/efiboot.img
 
 md5sum ../iso/$name-22.04-amd64.iso > ../iso/$name-22.04-amd64.md5
