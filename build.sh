@@ -207,8 +207,44 @@ sudo chroot $HOME/$name/chroot apt dist-upgrade -y
 #sudo chroot $HOME/$name/chroot sh -c "update-alternatives --set default.plymouth /usr/share/plymouth/themes/bgrt/bgrt.plymouth"
 #sudo chroot $HOME/$name/chroot update-initramfs -u -k all
 
-# Disabling some systemd processes to run smooth!
+# Disabling and masking some systemd processes to run smooth!
+sudo chroot $HOME/$name/chroot systemctl stop \
+  qemu-kvm \
+  docker \
+  libvirtd \
+  containerd \
+  cups \
+  casper-md5check \
+  dnsmasq \
+  libvirtd-admin.socket \
+  libvirtd.socket \
+  libvirtd-ro.socket \
+  libvirt-guests \
+  cups.socket \
+  NetworkManager-wait-online.service \
+  nmbd \
+  smbd \
+  apache2
+
 sudo chroot $HOME/$name/chroot systemctl disable \
+  qemu-kvm \
+  docker \
+  libvirtd \
+  containerd \
+  cups \
+  casper-md5check \
+  dnsmasq \
+  libvirtd-admin.socket \
+  libvirtd.socket \
+  libvirtd-ro.socket \
+  libvirt-guests \
+  cups.socket \
+  NetworkManager-wait-online.service \
+  nmbd \
+  smbd \
+  apache2
+
+sudo chroot $HOME/$name/chroot systemctl mask \
   qemu-kvm \
   docker \
   libvirtd \
