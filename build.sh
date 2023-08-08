@@ -214,7 +214,17 @@ sudo chroot $HOME/$name/chroot systemctl disable \
   libvirtd \
   containerd \
   cups \
-  casper-md5check
+  casper-md5check \
+  dnsmasq \
+  libvirtd-admin.socket \
+  libvirtd.socket \
+  libvirtd-ro.socket \
+  libvirt-guests \
+  cups.socket \
+  NetworkManager-wait-online.service \
+  nmbd \
+  smbd \
+  apache2
 
 # Reconfiguration of LAN
 sudo chroot $HOME/$name/chroot apt install --reinstall resolvconf
