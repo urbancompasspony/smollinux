@@ -156,7 +156,19 @@ sudo chroot $HOME/$name/chroot apt install -y --fix-missing \
    gnome-maps \
    gnome-weather \
    hardinfo \
-   drawing
+   drawing \
+   docker.io \
+   qemu-system \
+   qemu-utils \
+   qemu-user \
+   qemu-kvm \
+   qemu-guest-agent \
+   libvirt-clients \
+   libvirt-daemon-system \
+   bridge-utils \
+   virt-manager \
+   ovmf \
+   dnsmasq
 
 # WINE { If you do not want it, comment bellow }
 sudo chroot $HOME/$name/chroot dpkg --add-architecture i386
