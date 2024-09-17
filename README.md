@@ -1,15 +1,15 @@
-# smolubuntu
+# smollinux
 
 # What is it?
 
-With build.sh you will have everything you need to create your own Ubuntu Live USB .ISO!
+With build.sh you will have everything you need to create your own Linux Live USB .ISO, Ubuntu based or even with ArchLinux!
 The default values creates a .ISO that contains auto-login and auto-executes my "urbancompasspony/live" code.
 
 For now it will create somenthing that has 1.1 Gb and just OpenBox as option to startup some GUI. 
 Everything is running under TTY.
 
 Update: build-ssh let you create a simple basic liveISO for virtual machines.
-When booting, it will launch a SSH Server with user and password Ubuntu.
+When booting on Ubuntu, it will launch a SSH Server with user and password Ubuntu.
 Put an interface bridge plus another one "normal" and, with this distro, you will access the host system through this live VM.
 
 Use build-ssh with setting-ssh; or build with settings.
